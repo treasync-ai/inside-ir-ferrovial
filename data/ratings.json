@@ -1,0 +1,33 @@
+{
+  "asOf": "2026-06-30",
+  "corporate": [
+    { "agency": "S&P Global", "rating": "BBB", "shortTerm": "A-2", "outlook": "Stable", "lastAction": "Affirmed Nov 2025" },
+    { "agency": "Fitch", "rating": "BBB", "shortTerm": "F2", "outlook": "Stable", "lastAction": "Affirmed Jun 2025" },
+    { "agency": "Moody's", "rating": "Not rated (corporate)", "shortTerm": "—", "outlook": "—", "lastAction": "Moody's rates only project-level bonds, not the Ferrovial SE issuer" }
+  ],
+  "trap": "Common interview trap: Moody's does NOT assign a corporate rating to Ferrovial — its Baa1/Baa3 marks (e.g. NTE Baa1, I-66 Baa3, JFK NTO Baa3 negative) are PROJECT bonds. The corporate rating is BBB by S&P and Fitch.",
+  "projectRatings": [
+    { "asset": "NTE / NTE 35W (Texas managed lanes PABs)", "agency": "Moody's", "rating": "Baa1", "outlook": "Stable" },
+    { "asset": "I-66 Express (Virginia)", "agency": "Moody's", "rating": "Baa3", "outlook": "Positive" },
+    { "asset": "JFK New Terminal One", "agency": "Moody's", "rating": "Baa3", "outlook": "Negative (opening delay)" },
+    { "asset": "JFK New Terminal One 2025 green bonds", "agency": "Fitch", "rating": "BBB-", "outlook": "Stable" }
+  ],
+  "debtIssuance": [
+    { "instrument": "European Commercial Paper (ECP) programme", "size": "€1.5bn", "note": "Short-term funding for treasury needs; managed by Corporate Treasury (David's desk)." },
+    { "instrument": "Sustainability-Linked Financing Framework", "size": "—", "note": "KPI-linked (coupon step-ups tied to SBTi-aligned GHG targets), DNV second-party opinion. Not a use-of-proceeds green bond." },
+    { "instrument": "Managed Lanes Private Activity Bonds (PABs)", "size": "~$5.7bn gross (non-recourse)", "note": "Tax-exempt project bonds: NTE ~$1.6bn, NTE 35W ~$1.6bn, LBJ ~$2.0bn, I-77 ~$0.47bn." },
+    { "instrument": "JFK NTO green bonds (via NYTDC)", "size": "~$3.9bn cumulative", "note": "Includes ~$2.0bn (2024) and ~$1.37bn (2025) green tranches, oversubscribed." }
+  ],
+  "balanceSheet": {
+    "netCashExProjects": -1341,
+    "consolidatedNetDebt": 5893,
+    "liquidityExProjects": 5100,
+    "currency": "EUR (FY2025, €m)",
+    "comment": "Net CASH at the corporate (recourse) level; the ~€5.9bn consolidated figure is almost entirely non-recourse project debt that does not contaminate the parent."
+  },
+  "tsr": {
+    "note": "Total Shareholder Return = price appreciation + dividends reinvested. Ferrovial has materially outperformed European infra peers over 3y (re-rating + North-American toll growth). Shareholder remuneration FY2025: €657m (€501m buybacks + €156m cash dividend); ~€1bn proposed for 2026, ~€2.2bn aggregate 2024–2026.",
+    "buybackProgram": "Up to €800m (max 15m shares, ~2.04%), Dec 2025 → Oct 2026, executed by Goldman Sachs.",
+    "dividend": "Ferrovial Flexible Dividend (scrip): shareholders choose shares or cash. 2026 distribution ~€400m at €0.5578/share; 75.55% elected shares."
+  }
+}

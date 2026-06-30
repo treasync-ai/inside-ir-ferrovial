@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside IR · Ferrovial</title>
+<meta name="description" content="Inside IR Ferrovial — investor-relations dashboard tracking Ferrovial SE (FER) across Nasdaq, Madrid and Amsterdam: valuation (DCF & SOTP), share price, financials, peers, calendar and news.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F2B705'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='900' text-anchor='middle' fill='%231c2230' font-family='Arial'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="mark">F</span>
+      <span>Inside <b>IR</b> · Ferrovial <span class="sub">&nbsp;Investor Relations cockpit</span></span>
+    </div>
+    <div class="top-status">
+      <span id="data-status"><span class="dot" id="status-dot"></span> <span id="status-text">live</span></span>
+      <span class="small">FER · Nasdaq / BME / Euronext</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabs">
+    <a href="#/dashboard"><span class="ic">📊</span> Dashboard</a>
+    <a href="#/share"><span class="ic">📈</span> Share</a>
+    <a href="#/financials"><span class="ic">📒</span> Financials</a>
+    <a href="#/calendar"><span class="ic">🗓️</span> Calendar</a>
+    <a href="#/news"><span class="ic">📰</span> News</a>
+    <a href="#/peers"><span class="ic">⚖️</span> Peers</a>
+    <a href="#/valuation"><span class="ic">🧮</span> Valuation</a>
+    <a href="#/guide"><span class="ic">📖</span> Guide</a>
+  </div>
+</nav>
+
+<main id="app">
+  <div class="loading">Loading…</div>
+</main>
+
+<footer class="foot">
+  <p><b>Inside IR Ferrovial</b> — built by David Vargas Sarasqueta. Educational / interview-prep tool; not investment advice and not official Ferrovial material.
+  Live market data via Yahoo Finance (and Finnhub when configured). Curated figures from public results (FY2025 / Q1 2026) and sell-side research as of 30 Jun 2026.</p>
+</footer>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>

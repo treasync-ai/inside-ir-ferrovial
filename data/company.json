@@ -1,0 +1,56 @@
+{
+  "name": "Ferrovial SE",
+  "ticker": "FER",
+  "asOf": "2026-06-30",
+  "domicile": "Netherlands (Societas Europaea)",
+  "hq": "Amsterdam (NL) · US base New York · onboarding Austin, TX",
+  "chairman": "Rafael del Pino y Calvo-Sotelo (Executive Chairman)",
+  "ceo": "Ignacio Madridejos",
+  "sharesOutstanding": 729555372,
+  "listings": [
+    { "key": "US", "symbol": "FER", "market": "Nasdaq", "currency": "USD", "flag": "🇺🇸", "since": "2024-05-09" },
+    { "key": "ES", "symbol": "FER.MC", "market": "BME Madrid (IBEX 35)", "currency": "EUR", "flag": "🇪🇸", "since": "1999" },
+    { "key": "NL", "symbol": "FER.AS", "market": "Euronext Amsterdam", "currency": "EUR", "flag": "🇳🇱", "since": "2023" }
+  ],
+  "elevatorPitch": "Ferrovial is a developer, investor and operator of transport and energy infrastructure, with the centre of gravity of its value in North America. ~80–86% of its equity value sits in North American toll roads — the 407 ETR in Toronto and the US Managed Lanes. It redomiciled from Spain to the Netherlands in 2023 and listed on Nasdaq in May 2024 to broaden its US investor base and re-rate toward US infrastructure peers.",
+  "divisions": [
+    { "name": "Highways (Cintra)", "share": "~80–86% of equity value", "assets": "407 ETR (48.29%), US Managed Lanes (NTE, LBJ, NTE 35W, I-77, I-66), IRB (India)" },
+    { "name": "Airports", "share": "~10%", "assets": "JFK New Terminal One (49%), Dalaman (60%). Heathrow & AGS sold." },
+    { "name": "Construction", "share": "low single digit", "assets": "Ferrovial Construction, Budimex (50.14%), Webber (US)" },
+    { "name": "Energy", "share": "~1%", "assets": "Solar PV (~550 MW), transmission lines (Chile)" }
+  ],
+  "businessModel": "Concession / 'developer' model: design–build–finance–operate–maintain (DBFOM) long-duration assets (toll roads, airport terminals) that pay growing dividends up to the holding. Project debt is non-recourse. Mature assets are rotated (Heathrow, AGS) and capital recycled into US greenfield growth.",
+  "strategy": { "plan": "Enduring Growth (Capital Markets Day, 1 Feb 2024, New York)", "predecessor": "Plan Horizon 24", "note": "Ferrovial does NOT publish numeric medium-term group targets — guidance is qualitative/directional. The only recurring hard target is Construction's ~3.5% through-the-cycle adjusted EBIT margin." },
+  "keyStatsFY2025": {
+    "currency": "EUR",
+    "revenue": 9627, "adjEbitda": 1457, "adjEbit": 967, "netProfitAttributable": 888, "epsTotal": 1.24,
+    "orderBook": 17438, "netCashExProjects": -1341, "consolidatedNetDebt": 5893, "liquidityExProjects": 5100,
+    "projectDividends": 968, "projectDividendsHighways": 880,
+    "shareholderRemuneration": 657, "buybacks": 501, "cashDividends": 156
+  },
+  "shareholders": {
+    "asOf": "2025-12-31 (Fact Book, AFM register)",
+    "holders": [
+      { "name": "Rafael del Pino (Rijn Capital)", "pct": 21.53, "type": "Founding family" },
+      { "name": "TCI – The Children's Investment Fund", "pct": 10.03, "type": "Institutional (largest non-family)" },
+      { "name": "María del Pino (Menosmares)", "pct": 8.64, "type": "Founding family" },
+      { "name": "BlackRock", "pct": 4.33, "type": "Institutional (passive, rising post Nasdaq-100)" },
+      { "name": "Free float", "pct": 55.46, "type": "Free float" }
+    ],
+    "familyAggregate": "~34–35%",
+    "geographic": { "Europe ex-Spain": 54, "North America": 27, "Rest of world": 14, "Spain": 5, "note": "Institutional base, CMi2i as of Dec-2024 (latest disclosed). North America ~27% is the figure IR aims to grow." },
+    "governance": "One-share-one-vote, no golden shares; ~9 of 12 directors independent."
+  },
+  "esg": {
+    "strategy": "2030 Sustainability Strategy — 'NOW' pillars: Respect (environment), People, Right (governance).",
+    "targets": "SBTi-validated (Feb 2025), 1.5°C aligned: −42% Scope 1&2 and −25% Scope 3 by 2030 (2020 base); 100% renewable electricity from 2025; net-zero ≤2050.",
+    "ratings": [
+      { "agency": "MSCI", "value": "A" },
+      { "agency": "Sustainalytics", "value": "20.2 (Medium risk)" },
+      { "agency": "S&P Global CSA / DJSI", "value": "~81/100 (Best-in-Class)" },
+      { "agency": "CDP", "value": "A List (Climate & Water)" },
+      { "agency": "EcoVadis", "value": "Gold (80/100)" }
+    ]
+  },
+  "disclaimer": "Educational / interview-prep tool built by David Vargas. Not investment advice and not official Ferrovial material. Live market data via Yahoo Finance (and Finnhub if configured); curated figures from public results (FY2025 / Q1 2026) and sell-side research as of 30 Jun 2026 — verify before quoting."
+}

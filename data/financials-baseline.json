@@ -1,0 +1,31 @@
+{
+  "note": "Ferrovial-reported (adjusted / IR) metrics that Yahoo's standard fundamentals do not carry. Used to guarantee the Financials page always shows Ferrovial's own KPIs. Currency EUR (€m) except EPS (€) and ratios. Sources: FY2023–FY2025 results releases & financial statements.",
+  "currency": "EUR (€m)",
+  "metricLabels": {
+    "revenue": "Revenue",
+    "adjEbitda": "Adjusted EBITDA",
+    "adjEbit": "Adjusted EBIT",
+    "netProfitAttributable": "Net profit (attributable)",
+    "epsTotal": "EPS (€, total)",
+    "orderBook": "Construction order book",
+    "projectDividends": "Dividends received from projects",
+    "netCashExProjects": "Net debt ex-projects (− = net cash)",
+    "consolidatedNetDebt": "Consolidated net debt"
+  },
+  "years": [
+    { "year": 2021, "revenue": 6926, "adjEbitda": 712, "projectDividends": 525 },
+    { "year": 2022, "revenue": 7551, "adjEbitda": 776, "projectDividends": 553 },
+    { "year": 2023, "revenue": 8514, "adjEbitda": 991, "adjEbit": 712, "orderBook": 15632, "projectDividends": 741 },
+    { "year": 2024, "revenue": 9148, "adjEbitda": 1342, "adjEbit": 901, "netProfitAttributable": 3239, "epsTotal": 4.47, "orderBook": 16755, "projectDividends": 947, "netCashExProjects": -1794, "consolidatedNetDebt": 6061 },
+    { "year": 2025, "revenue": 9627, "adjEbitda": 1457, "adjEbit": 967, "netProfitAttributable": 888, "epsTotal": 1.24, "orderBook": 17438, "projectDividends": 968, "netCashExProjects": -1341, "consolidatedNetDebt": 5893 }
+  ],
+  "quarterlyRecent": [
+    { "period": "Q1 2026", "revenue": 2098, "adjEbitda": 321, "orderBook": 17555, "netCashExProjects": -1218, "consolidatedNetDebt": 6064, "projectDividends": 8, "note": "Q1 dividends seasonally light; big ones land in June & year-end." }
+  ],
+  "segmentsFY2025": [
+    { "division": "Construction", "revenue": 7653, "adjEbit": 352, "adjEbitMargin": 4.6 },
+    { "division": "Highways", "revenue": 1374, "adjEbitda": 990 },
+    { "division": "Energy", "revenue": 339, "adjEbitda": 3 },
+    { "division": "Airports", "revenue": 111, "adjEbitda": null }
+  ]
+}
