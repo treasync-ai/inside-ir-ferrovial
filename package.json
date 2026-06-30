@@ -1,16 +1,8 @@
 {
   "name": "inside-ir-ferrovial",
   "version": "1.0.0",
-  "description": "Inside IR Ferrovial — an investor-relations dashboard tracking Ferrovial SE (FER) across its Nasdaq, Madrid and Amsterdam listings: valuation (DCF & SOTP), share price, financials, peers, calendar and news.",
-  "type": "module",
+  "description": "Inside IR Ferrovial — an investor-relations cockpit for Ferrovial SE (FER): live share tracking across Nasdaq/Madrid/Amsterdam, interactive DCF & SOTP valuation, financials, peers, calendar and news. Static frontend; data refreshed by a scheduled GitHub Action (yfinance).",
   "private": true,
   "author": "David Vargas Sarasqueta",
-  "license": "MIT",
-  "scripts": {
-    "dev": "vercel dev",
-    "test:data": "node scripts/test-data.js"
-  },
-  "dependencies": {
-    "yahoo-finance2": "2.13.3"
-  }
+  "license": "MIT"
 }
