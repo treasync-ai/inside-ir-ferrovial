@@ -1,0 +1,224 @@
+{
+ "source": "Ferrovial Investor Relations — analyst coverage",
+ "asOf": "2026-05-28",
+ "currency": "EUR",
+ "analysts": [
+  {
+   "entity": "Green Street",
+   "analyst": "Robert Crimes",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 126.0,
+   "date": "2026-05-08"
+  },
+  {
+   "entity": "Morningstar",
+   "analyst": "Jack Fletcher-Price",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 80.0,
+   "date": "2026-05-21"
+  },
+  {
+   "entity": "Morgan Stanley",
+   "analyst": "Nicolas Mora",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 70.0,
+   "date": "2026-05-07"
+  },
+  {
+   "entity": "Bank of America",
+   "analyst": "Marcin Wojtal",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 68.0,
+   "date": "2026-05-11"
+  },
+  {
+   "entity": "RBC",
+   "analyst": "Ruairi Cullinane",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 68.0,
+   "date": "2026-05-11"
+  },
+  {
+   "entity": "Kepler Cheuvreux",
+   "analyst": "Luis Prieto",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 66.4,
+   "date": "2026-05-28"
+  },
+  {
+   "entity": "Barclays",
+   "analyst": "Pierre Rousseau",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 66.0,
+   "date": "2026-05-11"
+  },
+  {
+   "entity": "Goldman Sachs",
+   "analyst": "Patrick Creuset",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 65.0,
+   "date": "2026-05-28"
+  },
+  {
+   "entity": "UBS",
+   "analyst": "Cristian Nedelcu",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 65.0,
+   "date": "2026-05-21"
+  },
+  {
+   "entity": "JP Morgan",
+   "analyst": "Elodie Rall",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 65.0,
+   "date": "2026-05-20"
+  },
+  {
+   "entity": "Sabadell",
+   "analyst": "Luis Arredondo",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 65.0,
+   "date": "2026-05-08"
+  },
+  {
+   "entity": "Deutsche Bank",
+   "analyst": "Harishankar Ramamoorthy",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 61.4,
+   "date": "2026-05-01"
+  },
+  {
+   "entity": "Caixa BPI",
+   "analyst": "Filipe Leite",
+   "recommendation": "Outperform",
+   "bucket": "buy",
+   "target": 58.6,
+   "date": "2026-05-28"
+  },
+  {
+   "entity": "Mediobanca",
+   "analyst": "Nicolo Pessina",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 65.0,
+   "date": "2026-05-28"
+  },
+  {
+   "entity": "Bernstein",
+   "analyst": "Víctor Acitores",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 63.7,
+   "date": "2026-05-13"
+  },
+  {
+   "entity": "GVC Gaesco Valores",
+   "analyst": "Rafael Fernández de Heredia",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 61.0,
+   "date": "2026-05-08"
+  },
+  {
+   "entity": "renta4",
+   "analyst": "Ángel Pérez",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 60.1,
+   "date": "2026-05-08"
+  },
+  {
+   "entity": "Citigroup",
+   "analyst": "Marc Ip Tat Kuen",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 60.0,
+   "date": "2026-05-27"
+  },
+  {
+   "entity": "Jefferies",
+   "analyst": "Graham Hunt",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 60.0,
+   "date": "2026-05-08"
+  },
+  {
+   "entity": "BNP Paribas",
+   "analyst": "Dario Maglione",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 57.0,
+   "date": "2026-05-28"
+  },
+  {
+   "entity": "Bestinver",
+   "analyst": "Álvaro Navarro",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 54.65,
+   "date": "2026-05-28"
+  },
+  {
+   "entity": "Santander",
+   "analyst": "José Manuel Arroyas",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 46.1,
+   "date": "2026-05-28"
+  },
+  {
+   "entity": "Intermoney",
+   "analyst": "Guillermo Barrio",
+   "recommendation": "Hold",
+   "bucket": "hold",
+   "target": 45.0,
+   "date": "2026-04-22"
+  },
+  {
+   "entity": "Alantra Equities",
+   "analyst": "Álvaro Lenze",
+   "recommendation": "Underperform",
+   "bucket": "sell",
+   "target": 44.25,
+   "date": "2026-05-28"
+  },
+  {
+   "entity": "JB Capital",
+   "analyst": "Miguel González",
+   "recommendation": "Underperform",
+   "bucket": "sell",
+   "target": 43.4,
+   "date": "2026-05-28"
+  }
+ ],
+ "summary": {
+  "total": 25,
+  "distribution": {
+   "buy": 13,
+   "hold": 10,
+   "sell": 2
+  },
+  "consensusLabel": "Buy",
+  "target": {
+   "mean": 63.38,
+   "median": 63.7,
+   "high": 126.0,
+   "highFirm": "Green Street",
+   "low": 43.4,
+   "lowFirm": "JB Capital"
+  }
+ }
+}
