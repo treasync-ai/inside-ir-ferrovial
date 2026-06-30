@@ -14,13 +14,26 @@ function setStatus(generatedAt) {
   txt.textContent = `data as of ${t}`;
 }
 
+// Live snapshots are committed to GitHub by the scheduled Action. We read them
+// straight from GitHub's raw CDN (CORS-enabled, refreshes on every commit) so the
+// data updates WITHOUT any Vercel redeploy. Falls back to the copy bundled with
+// the deployment if raw is unreachable.
+const RAW = 'https://raw.githubusercontent.com/treasync-ai/inside-ir-ferrovial/main/data/live/';
+
 async function live(file) {
   const key = 'live:' + file;
   const cached = memo.get(key);
   if (cached && cached.until > Date.now()) return cached.promise;
-  const promise = fetch(`/data/live/${file}?t=${Math.floor(Date.now() / 60000)}`)
-    .then((r) => { if (!r.ok) throw new Error(`${file} not ready (${r.status})`); return r.json(); })
-    .then((j) => { if (j.generatedAt) setStatus(j.generatedAt); return j; });
+  const bust = Math.floor(Date.now() / 60000); // refresh at most once a minute
+  const promise = (async () => {
+    try {
+      const r = await fetch(`${RAW}${file}?t=${bust}`, { cache: 'no-store' });
+      if (r.ok) return await r.json();
+    } catch { /* fall back to bundled copy */ }
+    const r2 = await fetch(`/data/live/${file}?t=${bust}`);
+    if (!r2.ok) throw new Error(`${file} not ready (${r2.status})`);
+    return r2.json();
+  })().then((j) => { if (j.generatedAt) setStatus(j.generatedAt); return j; });
   memo.set(key, { promise, until: Date.now() + 30000 });
   promise.catch(() => memo.delete(key));
   return promise;
