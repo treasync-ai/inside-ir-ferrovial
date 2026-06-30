@@ -31,7 +31,7 @@ export default async function render(root) {
   const loadTech = (sym) => {
     document.getElementById('sh-signals').innerHTML = loading('Computing indicators…');
     api('technicals', { symbol: sym }).then((d) => renderTech(d)).catch(() => {
-      document.getElementById('sh-signals').innerHTML = errBox('Technical data loads on Vercel.');
+      document.getElementById('sh-signals').innerHTML = errBox('Technical data is refreshing — check back shortly.');
     });
   };
   document.getElementById('sh-sym').addEventListener('change', (e) => loadTech(e.target.value));

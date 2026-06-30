@@ -34,7 +34,7 @@ async function mount() {
   } catch (err) {
     console.error(err);
     app.innerHTML = `<div class="err">Something went wrong rendering this page: ${err.message}.
-      Live data needs the Vercel runtime — try refreshing, or run <code>vercel dev</code> locally.</div>`;
+      Live data is refreshed by a scheduled job — try refreshing in a minute.</div>`;
   }
 }
 

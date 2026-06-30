@@ -1,0 +1,40 @@
+name: Refresh market data
+
+# Yahoo Finance blocks Vercel's serverless IPs, but NOT GitHub Actions runners
+# (hosted on Azure). So we fetch here and commit the data as static JSON, which
+# Vercel serves from its CDN. Free, no API keys.
+
+on:
+  schedule:
+    # Every 30 min, 06:00–21:00 UTC, Mon–Fri (covers Madrid, Amsterdam & US hours).
+    - cron: '*/30 6-21 * * 1-5'
+  workflow_dispatch: {}   # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Fetch data from Yahoo
+        run: node scripts/fetch-data.js
+      - name: Commit updated snapshots
+        run: |
+          git config user.name "ferrovial-ir-bot"
+          git config user.email "actions@github.com"
+          git add data/live
+          if git diff --staged --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "chore(data): refresh market snapshots [skip ci]"
+            git push
+          fi

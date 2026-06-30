@@ -24,7 +24,7 @@ export default async function render(root) {
     document.getElementById('peers-note').innerHTML = callout('The valuation debate',
       'Ferrovial trades at a clear premium to construction-heavy peers (Vinci, ACS, Eiffage, Sacyr) and screens closer to pure toll-road quality (Transurban) and regulated airports (Aena). The premium reflects the duration and pricing power of its North-American toll roads — the bull case — while the 2026 sell-side downgrades (Citi, Jefferies, Bernstein) were <b>valuation-driven, not thesis-driven</b>.');
   } catch {
-    document.getElementById('peers-table').innerHTML = errBox('Peer data loads on Vercel (or with `vercel dev`). Peer set: Vinci, Eiffage, ACS, Sacyr, Transurban, Aena.');
+    document.getElementById('peers-table').innerHTML = errBox('Peer data is refreshing — check back shortly. Peer set: Vinci, Eiffage, ACS, Sacyr, Transurban, Aena.');
   }
 }
 

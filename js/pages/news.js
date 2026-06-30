@@ -14,7 +14,7 @@ export default async function render(root) {
     document.getElementById('news-list').innerHTML = items.length ? items.map(row).join('')
       : '<div class="muted">No headlines available right now.</div>';
   } catch {
-    document.getElementById('news-list').innerHTML = errBox('News aggregation runs on the server — it loads on Vercel (or with `vercel dev`). Add a free FINNHUB_API_KEY in Vercel for richer, deduped coverage.');
+    document.getElementById('news-list').innerHTML = errBox('News is refreshed by the scheduled data job (Yahoo Finance). If this is blank, the first refresh has not run yet.');
   }
 }
 

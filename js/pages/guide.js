@@ -30,8 +30,8 @@ export default async function render(root) {
       <h3>How I built it — the stack</h3>
       <div class="grid g3 mt8">
         <div><b>Frontend</b><p class="small">Vanilla JavaScript single-page app (hash router, no framework) with Chart.js. Theme in Ferrovial’s white / gray / yellow. Easy to read and edit.</p></div>
-        <div><b>Backend</b><p class="small">Node.js serverless functions on Vercel (<code>/api/*</code>) that proxy and process live market data, with caching and graceful fallbacks. No secrets in the client.</p></div>
-        <div><b>Data</b><p class="small">Yahoo Finance for prices, history, technicals, fundamentals, peers and calendar; optional Finnhub for richer news; curated JSON for the SOTP/DCF model, ratings and IR KPIs.</p></div>
+        <div><b>Data pipeline</b><p class="small">A scheduled GitHub Action fetches Yahoo Finance from Azure runners (Yahoo blocks Vercel's IPs but not GitHub's) and commits static JSON snapshots the app reads directly. No serverless functions, no API keys.</p></div>
+        <div><b>Data</b><p class="small">Yahoo Finance for prices, history, technicals, fundamentals, peers and news; curated JSON for the SOTP/DCF model, credit ratings and IR KPIs.</p></div>
       </div>
     </div>
 

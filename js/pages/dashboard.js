@@ -27,7 +27,7 @@ export default async function render(root) {
     document.getElementById('dash-listings').innerHTML = (d.listings || []).map(listingCard).join('');
     renderSentiment(document.getElementById('dash-sentiment'), d.sentiment);
   }).catch(() => {
-    document.getElementById('dash-listings').innerHTML = errBox('Live quotes unavailable here. They load on Vercel (or with `vercel dev`).');
+    document.getElementById('dash-listings').innerHTML = errBox('Live quotes are refreshing — the first scheduled fetch may still be running (data updates every ~30 min during market hours).');
     document.getElementById('dash-sentiment').innerHTML = '';
   });
 
@@ -43,9 +43,9 @@ export default async function render(root) {
     }
   }).catch(() => {
     const c = document.getElementById('dash-chart');
-    if (c) c.parentElement.innerHTML = errBox('Price history loads on Vercel.');
+    if (c) c.parentElement.innerHTML = errBox('Price history is refreshing — check back shortly.');
     document.getElementById('dash-returns').innerHTML = '';
-    document.getElementById('dash-ytd').innerHTML = errBox('YTD data loads on Vercel.');
+    document.getElementById('dash-ytd').innerHTML = errBox('YTD data is refreshing — check back shortly.');
   });
   loadHistory('1y');
 
@@ -59,7 +59,7 @@ export default async function render(root) {
   api('news').then((d) => {
     const items = (d.items || []).slice(0, 6);
     document.getElementById('dash-news').innerHTML = items.length ? items.map(newsRow).join('') : '<div class="muted small">No headlines available.</div>';
-  }).catch(() => { document.getElementById('dash-news').innerHTML = errBox('News loads on Vercel.'); });
+  }).catch(() => { document.getElementById('dash-news').innerHTML = errBox('News is refreshing — check back shortly.'); });
 }
 
 function renderSentiment(box, s) {

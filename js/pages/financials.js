@@ -10,7 +10,7 @@ export default async function render(root) {
      <div class="grid g3 mb" id="fin-charts"></div>
      <div class="card">
        <div class="spread mb">
-         <div><h3>Detailed financials</h3><div class="card-sub">Source: Yahoo Finance fundamentals (IFRS). Loads live on Vercel.</div></div>
+         <div><h3>Detailed financials</h3><div class="card-sub">Source: Yahoo Finance fundamentals (IFRS), refreshed by the scheduled data job.</div></div>
          <div class="range-btns" id="fin-freq"><button data-f="annual" class="active">Annual</button><button data-f="quarterly">Quarterly</button></div>
        </div>
        <div id="fin-detail">${loading('Loading statements…')}</div>
@@ -25,7 +25,7 @@ export default async function render(root) {
   const loadDetail = (freq) => {
     document.getElementById('fin-detail').innerHTML = loading('Loading statements…');
     api('financials', { freq }).then((d) => renderDetail(d)).catch(() =>
-      { document.getElementById('fin-detail').innerHTML = errBox('Detailed IFRS statements load on Vercel (or with `vercel dev`). The curated KPIs above are always available.'); });
+      { document.getElementById('fin-detail').innerHTML = errBox('Detailed IFRS statements are refreshed by the scheduled data job. The curated KPIs above are always available.'); });
   };
   document.getElementById('fin-freq').addEventListener('click', (e) => {
     const b = e.target.closest('button'); if (!b) return;

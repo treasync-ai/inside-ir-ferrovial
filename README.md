@@ -23,69 +23,55 @@ Built by **David Vargas Sarasqueta** as an interview-prep / portfolio project fo
 
 ## Tech stack
 
-- **Frontend:** vanilla JavaScript single-page app (hash router, no framework) + [Chart.js](https://www.chartjs.org/). Theme in Ferrovial white / gray / yellow.
-- **Backend:** Node.js **serverless functions** on Vercel (`/api/*`) with caching, retry/backoff and graceful fallbacks. No secrets in the browser.
-- **Data:** [Yahoo Finance](https://github.com/gadicc/node-yahoo-finance2) (prices, history, technicals, fundamentals, peers, calendar); optional [Finnhub](https://finnhub.io/) for news; curated JSON for the SOTP/DCF model, ratings and IR KPIs.
+- **Frontend:** vanilla JavaScript single-page app (hash router, no framework) + [Chart.js](https://www.chartjs.org/), served statically by Vercel. Theme in Ferrovial white / gray / yellow.
+- **Data pipeline:** a scheduled **GitHub Action** (`.github/workflows/refresh-data.yml`) runs `scripts/fetch-data.js` on GitHub's **Azure runners** — where Yahoo Finance is *not* IP-blocked (it blocks Vercel's AWS IPs) — and commits the results as static JSON to `/data/live`. The browser reads those files directly. **No serverless functions, no API keys, no secrets.**
+- **Data sources:** Yahoo Finance (prices, history, technicals, fundamentals, peers, news) via the Action; curated JSON for the SOTP/DCF model, credit ratings, IR KPIs and indicative peer multiples.
 
 ## Project structure
 
 ```
 inside-ir-ferrovial/
-├── api/                # Vercel serverless functions
-│   ├── _lib/           # config (listings, peers), yahoo wrapper, cache, finnhub, http helpers
-│   ├── quotes.js  history.js  technicals.js  financials.js
-│   └── news.js    peers.js    calendar.js
-├── index.html          # SPA shell
-├── css/styles.css      # theme
-├── js/                 # app.js (router), api.js, util.js, charts.js, ui.js, pages/*
-├── data/               # curated JSON: company, ratings, sotp, financials-baseline, calendar-baseline
-├── scripts/test-data.js
+├── .github/workflows/refresh-data.yml   # scheduled data fetcher (the "backend")
+├── api/_lib/            # config (listings, peers) + Yahoo REST client used by the fetcher
+├── scripts/fetch-data.js # pulls Yahoo → writes data/live/*.json
+├── index.html           # SPA shell
+├── css/styles.css       # theme
+├── js/                  # app.js (router), api.js, util.js, charts.js, ui.js, pages/*
+├── data/                # curated JSON (company, ratings, sotp, financials-baseline, …)
+│   └── live/            # auto-generated market snapshots (committed by the Action)
 ├── vercel.json
 └── package.json
 ```
 
-## Run locally
+## How live data works (no API keys)
 
-```bash
-npm install
-npm i -g vercel        # first time only
-vercel dev             # serves the static site + /api functions at http://localhost:3000
-```
+Yahoo Finance **blocks Vercel's serverless IPs** (AWS) but **not GitHub Actions runners** (Azure). So:
 
-> Opening `index.html` directly as a file won’t run the `/api` functions. Use `vercel dev` (or deploy) for live data. The Valuation, Financials (curated KPIs) and Guide pages work from local JSON regardless.
+1. `.github/workflows/refresh-data.yml` runs `node scripts/fetch-data.js` on a schedule (every 30 min, market hours).
+2. The script pulls quotes / history / technicals / fundamentals / peers / news from Yahoo and writes `data/live/*.json`.
+3. It commits those files; Vercel redeploys and serves them from its CDN.
+4. The browser reads `/data/live/*.json` directly — fast, static, keyless.
 
-Quick data sanity check (hits Yahoo directly):
-
-```bash
-npm run test:data
-```
+Run the fetcher manually anytime from the repo's **Actions → Refresh market data → Run workflow**, or locally with `node scripts/fetch-data.js` (from a non-blocked IP).
 
 ## Deploy to Vercel
 
-1. Push this repo to GitHub (already done if you’re reading this on GitHub).
-2. Go to **[vercel.com/new](https://vercel.com/new)** → **Import** this repository.
-3. Framework preset: **Other**. Leave build settings empty. Click **Deploy**.
-4. (Optional) Add the Finnhub key for richer news — see below.
+1. Import the repo at **[vercel.com/new](https://vercel.com/new)**.
+2. Framework preset: **Other**. Leave build settings empty. **Deploy**.
+3. Enable the GitHub Action (it's in the repo) and run it once so `data/live` is populated.
 
-That’s it: static files are served from the root and `api/*.js` become serverless functions automatically.
-
-## Environment variables (optional)
-
-The app runs fully **without any keys**. To enrich the News feed:
-
-| Variable | How to get it |
-|----------|----------------|
-| `FINNHUB_API_KEY` | Free at [finnhub.io/register](https://finnhub.io/register) (takes ~1 min). Add it in **Vercel → Project → Settings → Environment Variables**, then redeploy. |
+No environment variables. No API keys.
 
 ## Customize
 
-- **Peer set:** `api/_lib/config.js` → `PEERS`.
-- **Curated figures / model:** edit the JSON in `data/` (`sotp.json`, `ratings.json`, `financials-baseline.json`, `company.json`, `calendar-baseline.json`). No build step — just edit and redeploy.
+- **Peer set:** `api/_lib/config.js` → `PEERS` (and `PEER_MULTIPLES`, `SHARES`).
+- **Refresh frequency:** the `cron` in `.github/workflows/refresh-data.yml`.
+- **Curated figures / model:** edit the JSON in `data/` (`sotp.json`, `ratings.json`, `financials-baseline.json`, `company.json`, `calendar-baseline.json`).
 - **Theme:** CSS variables at the top of `css/styles.css`.
 
 ## Data & methodology
 
-Live market data via Yahoo Finance (and Finnhub when configured), cached at the edge so providers are queried sparingly. Curated figures are from Ferrovial’s FY2025 results, Q1 2026 trading update, financial statements and sell-side research **as of 30 June 2026** — verify before quoting. The valuation defaults are calibrated to roughly reproduce Ferrovial’s ~€43bn equity value so the sliders demonstrate *sensitivity*, not a price target.
+Live market data from Yahoo Finance, refreshed by the scheduled Action. Curated figures are from Ferrovial’s FY2025 results, Q1 2026 trading update, financial statements and sell-side research **as of 30 June 2026** — verify before quoting. Peer P/E and EV/EBITDA are curated indicative figures where the free data doesn't expose them. The valuation defaults are calibrated to roughly reproduce Ferrovial’s ~€43bn equity value so the sliders demonstrate *sensitivity*, not a price target.
 
 ## License
 
