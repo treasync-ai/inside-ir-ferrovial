@@ -1,97 +1,60 @@
-// GET /api/quotes  → live quotes for Ferrovial's three listings + analyst sentiment.
-import { FERROVIAL } from './_lib/config.js';
-import { quoteMany, summary } from './_lib/yahoo.js';
+// GET /api/quotes → quotes for Ferrovial's three listings + momentum sentiment.
+// Uses Yahoo's crumbless chart endpoint (works from serverless IPs); Finnhub as
+// a fallback for the US line when a key is configured.
+import { FERROVIAL, SHARES } from './_lib/config.js';
+import { quoteFromChart, chart } from './_lib/yahooRest.js';
 import { finnhubEnabled, finnhubQuote } from './_lib/finnhub.js';
 import { withCache } from './_lib/cache.js';
 import { ok, fail } from './_lib/http.js';
 
-const symbols = FERROVIAL.listings.map((l) => l.symbol);
-
-function mapQuote(l, q) {
-  return {
-    key: l.key, symbol: l.symbol, market: l.market, currency: q?.currency || l.currency,
-    flag: l.flag, name: 'Ferrovial',
-    price: q?.regularMarketPrice ?? null,
-    prevClose: q?.regularMarketPreviousClose ?? null,
-    open: q?.regularMarketOpen ?? null,
-    dayHigh: q?.regularMarketDayHigh ?? null,
-    dayLow: q?.regularMarketDayLow ?? null,
-    volume: q?.regularMarketVolume ?? null,
-    marketCap: q?.marketCap ?? null,
-    change: q?.regularMarketChange ?? null,
-    changePercent: q?.regularMarketChangePercent ?? null,
-    week52High: q?.fiftyTwoWeekHigh ?? null,
-    week52Low: q?.fiftyTwoWeekLow ?? null,
-    exchange: q?.fullExchangeName ?? l.market,
-    marketState: q?.marketState ?? null
-  };
+function closeAgo(series, bars) {
+  const i = series.length - 1 - bars;
+  return i >= 0 ? series[i].close : (series[0]?.close ?? null);
 }
 
-function sentimentFrom(rec, fin, price) {
-  const t = rec?.trend?.[0];
-  let recScore = null, dist = null;
-  if (t) {
-    const total = (t.strongBuy + t.buy + t.hold + t.sell + t.strongSell) || 1;
-    recScore = (t.strongBuy * 1 + t.buy * 0.5 + t.hold * 0 + t.sell * -0.5 + t.strongSell * -1) / total; // -1..1
-    dist = { strongBuy: t.strongBuy, buy: t.buy, hold: t.hold, sell: t.sell, strongSell: t.strongSell };
-  }
-  const target = fin?.targetMeanPrice ?? null;
-  const cur = fin?.currentPrice ?? price ?? null;
-  const upside = (target && cur) ? ((target - cur) / cur) : null; // fraction
-
-  // Composite 0..100 index: 60% analyst rating, 40% target upside (capped ±25%).
-  let index = 50;
-  const parts = [];
-  if (recScore != null) { index = 50 + recScore * 30; parts.push({ k: 'Analyst ratings', v: Math.round((recScore + 1) * 50) }); }
-  if (upside != null) {
-    const u = Math.max(-0.25, Math.min(0.25, upside));
-    index = (recScore != null ? index * 0.6 : 50) + (50 + (u / 0.25) * 30) * (recScore != null ? 0.4 : 1);
-    parts.push({ k: 'Target upside', v: Math.round(50 + (u / 0.25) * 50) });
-  }
-  index = Math.max(0, Math.min(100, Math.round(index)));
-  const label = index >= 70 ? 'Bullish' : index >= 58 ? 'Moderately bullish'
-    : index >= 42 ? 'Neutral' : index >= 30 ? 'Moderately bearish' : 'Bearish';
-
-  return {
-    index, label, recommendationMean: fin?.recommendationMean ?? null,
-    recommendationKey: fin?.recommendationKey ?? null,
-    distribution: dist, numberOfAnalysts: fin?.numberOfAnalystOpinions ?? null,
-    targetMean: target, targetHigh: fin?.targetHighPrice ?? null, targetLow: fin?.targetLowPrice ?? null,
-    currentPrice: cur, upsidePct: upside != null ? upside * 100 : null, parts
-  };
+async function momentumSentiment() {
+  try {
+    const { meta, series } = await chart(FERROVIAL.primary, { range: '6mo', interval: '1d' });
+    if (series.length < 25) return null;
+    const last = series[series.length - 1].close;
+    const r1m = (last / closeAgo(series, 21) - 1) * 100;
+    const r3m = (last / closeAgo(series, 63) - 1) * 100;
+    const hi = meta.fiftyTwoWeekHigh, lo = meta.fiftyTwoWeekLow;
+    const pos = (hi && lo && hi > lo) ? (last - lo) / (hi - lo) : 0.5;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    let index = 50 + clamp(r3m, -20, 20) / 20 * 25 + clamp(r1m, -10, 10) / 10 * 15 + (pos - 0.5) * 20;
+    index = Math.round(Math.max(0, Math.min(100, index)));
+    const label = index >= 70 ? 'Bullish' : index >= 58 ? 'Moderately bullish'
+      : index >= 42 ? 'Neutral' : index >= 30 ? 'Moderately bearish' : 'Bearish';
+    return { index, label, basis: 'momentum', r1m, r3m, pos52: pos * 100, week52High: hi, week52Low: lo, price: last, currency: meta.currency };
+  } catch { return null; }
 }
 
 export default async function handler(req, res) {
   try {
-    const data = await withCache('quotes:v1', 45, async () => {
-      const quotes = await quoteMany(symbols).catch(() => null);
-      const bySym = {};
-      (quotes || []).forEach((q) => { bySym[q.symbol] = q; });
-
-      // Finnhub fallback for the US line if Yahoo failed entirely.
-      if (!quotes && finnhubEnabled()) {
-        try {
-          const fq = await finnhubQuote('FER');
-          bySym['FER'] = {
-            symbol: 'FER', currency: 'USD', regularMarketPrice: fq.price,
-            regularMarketPreviousClose: fq.prevClose, regularMarketOpen: fq.open,
-            regularMarketDayHigh: fq.high, regularMarketDayLow: fq.low,
-            regularMarketChange: fq.change, regularMarketChangePercent: fq.changePercent
-          };
-        } catch { /* ignore */ }
-      }
-
-      const listings = FERROVIAL.listings.map((l) => mapQuote(l, bySym[l.symbol]));
-
-      let sentiment = null;
-      try {
-        const s = await summary(FERROVIAL.primary, ['recommendationTrend', 'financialData', 'price']);
-        sentiment = sentimentFrom(s.recommendationTrend, s.financialData, s.price?.regularMarketPrice);
-      } catch { /* sentiment optional */ }
-
-      return { listings, sentiment, source: quotes ? 'yahoo' : (finnhubEnabled() ? 'finnhub' : 'none') };
+    const data = await withCache('quotes:v2', 60, async () => {
+      const listings = await Promise.all(FERROVIAL.listings.map(async (l) => {
+        let q = null;
+        try { q = await quoteFromChart(l.symbol); }
+        catch {
+          if (l.key === 'US' && finnhubEnabled()) { try { q = await finnhubQuote('FER'); } catch { /* */ } }
+        }
+        const price = q?.price ?? null;
+        const shares = SHARES[l.symbol];
+        return {
+          key: l.key, symbol: l.symbol, market: l.market, currency: q?.currency || l.currency, flag: l.flag, name: 'Ferrovial',
+          price, prevClose: q?.prevClose ?? null, open: q?.open ?? null,
+          dayHigh: q?.dayHigh ?? null, dayLow: q?.dayLow ?? null, volume: q?.volume ?? null,
+          marketCap: (price != null && shares) ? price * shares : null,
+          change: q?.change ?? null, changePercent: q?.changePercent ?? null,
+          week52High: q?.week52High ?? null, week52Low: q?.week52Low ?? null,
+          exchange: q?.exchange || l.market, marketState: q?.marketState || null
+        };
+      }));
+      const sentiment = await momentumSentiment();
+      return { listings, sentiment };
     });
-    return ok(res, data, { cdnSeconds: 45, swr: 600 });
+    return ok(res, data, { cdnSeconds: 60, swr: 900 });
   } catch (err) {
     return fail(res, 502, 'Could not load quotes', { detail: String(err?.message || err) });
   }

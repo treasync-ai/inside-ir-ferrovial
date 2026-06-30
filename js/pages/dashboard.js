@@ -65,8 +65,7 @@ export default async function render(root) {
 function renderSentiment(box, s) {
   if (!s) { box.innerHTML = ''; return; }
   const idx = s.index ?? 50;
-  const dist = s.distribution;
-  const total = dist ? (dist.strongBuy + dist.buy + dist.hold + dist.sell + dist.strongSell) : 0;
+  const pos52 = s.pos52 != null ? s.pos52 : null;
   box.innerHTML = `<div class="card">
     <div class="gauge">
       <div><div class="big">${idx}<small style="font-size:15px">/100</small></div><div class="lab"><span class="pill y">${esc(s.label)}</span></div></div>
@@ -74,18 +73,16 @@ function renderSentiment(box, s) {
         <div class="track"><div class="needle" style="left:${Math.max(1, Math.min(99, idx))}%"></div></div>
         <div class="spread small muted" style="margin-top:6px"><span>Bearish</span><span>Neutral</span><span>Bullish</span></div>
       </div>
-      <div style="min-width:200px">
-        <div class="small muted">Analyst consensus</div>
-        <div><b>${esc(s.recommendationKey || '—')}</b>${s.numberOfAnalysts ? ` · ${s.numberOfAnalysts} analysts` : ''}</div>
-        <div class="small" style="margin-top:6px">Mean target <b>${s.targetMean != null ? fmt.money(s.targetMean, s.currentPrice && s.currentPrice > 100 ? 'USD' : 'EUR', 2) : '—'}</b>
-          ${s.upsidePct != null ? `· upside ${fmt.pctHTML(s.upsidePct)}` : ''}</div>
+      <div style="min-width:230px">
+        <div class="small muted">Price momentum</div>
+        <div class="row" style="gap:8px;margin-top:4px">
+          <span class="pill">1M ${fmt.pctHTML(s.r1m)}</span>
+          <span class="pill">3M ${fmt.pctHTML(s.r3m)}</span>
+        </div>
+        ${pos52 != null ? `<div class="small" style="margin-top:6px">52-week position: <b>${fmt.num(pos52, 0)}%</b> of range</div>` : ''}
       </div>
     </div>
-    ${dist && total ? `<div class="row" style="margin-top:12px;gap:8px">
-      ${[['Strong buy', dist.strongBuy, 'green'], ['Buy', dist.buy, 'green'], ['Hold', dist.hold, ''], ['Sell', dist.sell, 'red'], ['Strong sell', dist.strongSell, 'red']]
-        .map(([k, v, c]) => `<span class="pill ${c}">${k}: <b>${v}</b></span>`).join('')}
-    </div>` : ''}
-    <div class="small muted" style="margin-top:8px">Composite of analyst ratings &amp; mean-target upside. Educational, not a recommendation.</div>
+    <div class="small muted" style="margin-top:8px">Momentum-based sentiment (1M &amp; 3M return + position in the 52-week range). Educational, not a recommendation — analyst-consensus data needs a paid feed.</div>
   </div>`;
 }
 

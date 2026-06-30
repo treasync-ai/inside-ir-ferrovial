@@ -1,6 +1,14 @@
 // Central configuration: Ferrovial's three listings + the peer set.
 // Ferrovial SE trades the SAME share, fungibly, on three venues.
 
+// Shares outstanding (approx) for market-cap = price × shares, since the
+// crumbless chart endpoint does not return market cap. Editable.
+export const SHARES = {
+  'FER': 729555372, 'FER.MC': 729555372, 'FER.AS': 729555372,
+  'DG.PA': 580000000, 'FGR.PA': 95000000, 'ACS.MC': 255000000,
+  'SCYR.MC': 720000000, 'TCL.AX': 3085000000, 'AENA.MC': 150000000
+};
+
 export const FERROVIAL = {
   name: 'Ferrovial SE',
   listings: [
