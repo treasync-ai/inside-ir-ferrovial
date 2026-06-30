@@ -14,7 +14,16 @@ export default async function render(root) {
 
   root.innerHTML = pageHead('Ferrovial valuation — DCF & SOTP',
     'Understand why Ferrovial is valued where it is — and where it could be. Move the assumptions and watch both models react in real time. Illustrative, not a target price.') +
-    `<div class="card mb">
+    `<div class="card mb" style="background:var(--yellow-l);border-color:#f2d99a">
+       <h3 style="margin-bottom:6px">How to use this model</h3>
+       <ol class="small" style="margin:0;padding-left:18px">
+         <li><b>Pick a method.</b> <b>Sum-of-the-Parts</b> values each asset and adds them up — the way infrastructure is valued; <b>DCF (group)</b> is a whole-company cross-check.</li>
+         <li><b>Move the global sliders</b> (WACC, risk-free rate) and watch both models react — raising rates lowers the value of long-duration assets.</li>
+         <li><b>Tune each asset</b> in the assumptions below (toll growth, EV/EBITDA multiples, invested equity…) to test a thesis. The 407 ETR is a dividend-discount to 2098; the US Managed Lanes a proportionate EV/EBITDA.</li>
+         <li><b>Read the output</b> — implied equity value, value per share, and upside/(downside) vs the live market price. Defaults are calibrated to roughly reproduce the ~€43bn equity value, so the sliders show <i>sensitivity</i>, not a target price.</li>
+       </ol>
+     </div>
+     <div class="card mb">
        <div class="spread mb">
          <div class="range-btns" id="val-tabs"><button data-t="sotp" class="active">Sum-of-the-Parts</button><button data-t="dcf">DCF (group)</button></div>
          <div class="small muted">Live price: <b id="val-live">…</b></div>
@@ -220,7 +229,7 @@ function recompute() {
         <div class="asset-bar"><div class="nm">PV of explicit FCF</div><div class="track"><div class="fill" style="width:${100 - tShare}%;background:#F2B705"></div></div><div class="vv">${fmt.millions(r.pvExplicit)}</div></div>
         <div class="asset-bar"><div class="nm">PV of terminal value</div><div class="track"><div class="fill" style="width:${tShare}%;background:#aeb6c0"></div></div><div class="vv">${fmt.millions(r.pvTerminal)}</div></div>
         <div class="small muted" style="margin-top:6px">Terminal value is <b>${fmt.num(tShare, 0)}%</b> of EV — a reminder of how sensitive a DCF is to the discount rate and terminal growth.</div>
-        ${callout('Interview point', 'A vanilla group DCF tends to land below the market because it cannot capture the 70-year 407 concession the way the SOTP/DDM does. That gap is exactly why infrastructure is valued sum-of-the-parts.')}
+        ${callout('Methodology', 'A vanilla group DCF tends to land below the market because it cannot capture the 70-year 407 concession the way the SOTP/DDM does. That gap is exactly why infrastructure is valued sum-of-the-parts — use the SOTP tab as the primary lens and this DCF as a sanity check.')}
       </div>
     </div>`;
   }

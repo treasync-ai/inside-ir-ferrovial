@@ -1,7 +1,7 @@
 import { api, data } from '../api.js';
 import { fmt, esc } from '../util.js';
 import { pageHead, stat, listingCard, loading, errBox, callout } from '../ui.js';
-import { multiLine, COLORS } from '../charts.js';
+import { multiLine, barChart, COLORS } from '../charts.js';
 
 const LISTINGS = [['FER.MC', 'Madrid'], ['FER', 'Nasdaq'], ['FER.AS', 'Amsterdam']];
 
@@ -19,14 +19,20 @@ export default async function render(root) {
        <div class="chart-box" style="height:280px"><canvas id="sh-price"></canvas></div>
        <div class="chart-box" style="height:120px;margin-top:8px"><canvas id="sh-rsi"></canvas></div>
      </div>
+     <div class="card mb" id="sh-dividends">${loading('Loading dividends…')}</div>
      <div class="grid g2 mb">
        <div class="card" id="sh-ratings">${loading('Loading ratings…')}</div>
        <div class="card" id="sh-debt"></div>
      </div>
      <div class="card" id="sh-tsr"></div>`;
 
-  api('quotes').then((d) => { document.getElementById('sh-listings').innerHTML = (d.listings || []).map(listingCard).join(''); })
-    .catch(() => { document.getElementById('sh-listings').innerHTML = errBox('Live quotes load on Vercel.'); });
+  const quotesP = api('quotes');
+  quotesP.then((d) => { document.getElementById('sh-listings').innerHTML = (d.listings || []).map(listingCard).join(''); })
+    .catch(() => { document.getElementById('sh-listings').innerHTML = errBox('Live quotes are refreshing — check back shortly.'); });
+
+  Promise.all([api('dividends'), quotesP.catch(() => null)])
+    .then(([div, q]) => renderDividends(div, q?.listings?.find((l) => l.symbol === 'FER.MC')?.price))
+    .catch(() => { document.getElementById('sh-dividends').innerHTML = errBox('Dividend data is refreshing — check back shortly.'); });
 
   const loadTech = (sym) => {
     document.getElementById('sh-signals').innerHTML = loading('Computing indicators…');
@@ -68,13 +74,38 @@ function renderTech(d) {
   ], { yFmt: (v) => fmt.num(v, 0), legend: false });
 }
 
+function renderDividends(d, price) {
+  const box = document.getElementById('sh-dividends');
+  if (!box) return;
+  const ccy = d.currency || 'EUR';
+  const recent = (d.payments || []).slice().reverse().slice(0, 8);
+  const yld = (d.ttm && price) ? d.ttm / price * 100 : null;
+  box.innerHTML = `<div class="spread mb"><div><h3>Dividends</h3><div class="card-sub">Ferrovial Flexible Dividend (scrip — shares or cash) · ${esc(ccy)}</div></div></div>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+      ${stat('Dividend (TTM)', fmt.money(d.ttm, ccy, 4))}
+      ${stat('Dividend yield', yld != null ? fmt.num(yld, 2) + '%' : '—', 'TTM / Madrid price')}
+      ${stat('Last payment', fmt.money(d.lastAmount, ccy, 4), d.lastDate ? fmt.date(d.lastDate) : '')}
+    </div>
+    <div class="grid g2">
+      <div><div class="card-sub mb">Dividend per share by year</div><div class="chart-box" style="height:200px"><canvas id="sh-div-chart"></canvas></div></div>
+      <div><div class="card-sub mb">Recent payments</div>
+        <div class="tbl-wrap" style="box-shadow:none;max-height:230px;overflow:auto"><table class="data"><thead><tr><th style="text-align:left">Date</th><th>Amount</th></tr></thead>
+        <tbody>${recent.map((p) => `<tr><td style="text-align:left">${fmt.date(p.date)}</td><td>${fmt.money(p.amount, ccy, 4)}</td></tr>`).join('')}</tbody></table></div>
+      </div>
+    </div>
+    <div class="small muted" style="margin-top:8px">Scrip dividend: shareholders elect new shares or cash. Yield uses trailing-12-month cash dividends over the Madrid (FER.MC) price.</div>`;
+  const yrs = (d.byYear || []).filter((y) => y.year >= 2014);
+  const c = document.getElementById('sh-div-chart');
+  if (c) barChart(c, yrs.map((y) => ({ label: y.year, value: y.total, self: y.year === 2025 })), { yFmt: (v) => '€' + fmt.num(v, 2) });
+}
+
 function renderRatings(r) {
   const rows = (r.corporate || []).map((x) =>
     `<tr><td>${esc(x.agency)}</td><td>${esc(x.rating)}</td><td>${esc(x.shortTerm)}</td><td>${esc(x.outlook)}</td><td class="muted small" style="text-align:left">${esc(x.lastAction)}</td></tr>`).join('');
   const proj = (r.projectRatings || []).map((x) => `<tr><td style="text-align:left">${esc(x.asset)}</td><td>${esc(x.agency)}</td><td>${esc(x.rating)}</td><td class="small">${esc(x.outlook)}</td></tr>`).join('');
   document.getElementById('sh-ratings').innerHTML = `<h3>Credit ratings</h3><div class="card-sub">Corporate (issuer) ratings</div>
     <div class="tbl-wrap" style="box-shadow:none"><table class="data"><thead><tr><th>Agency</th><th>LT</th><th>ST</th><th>Outlook</th><th style="text-align:left">Last action</th></tr></thead><tbody>${rows}</tbody></table></div>
-    ${callout('Interview trap', r.trap, 'red')}
+    ${callout('Note', r.trap, 'red')}
     <h4 style="margin-top:14px">Project-level bond ratings</h4>
     <div class="tbl-wrap" style="box-shadow:none"><table class="data"><thead><tr><th style="text-align:left">Asset</th><th>Agency</th><th>Rating</th><th>Outlook</th></tr></thead><tbody>${proj}</tbody></table></div>`;
 

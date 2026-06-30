@@ -1,0 +1,19 @@
+{
+  "note": "Selected covering analysts with indicative ratings (~mid-2026), enriched at run time with live rating changes from Yahoo where available. The recommendation distribution and price target on the page are live.",
+  "firms": [
+    { "firm": "BofA Securities", "grade": "Buy", "target": 67, "date": "2025-12" },
+    { "firm": "Morgan Stanley", "grade": "Overweight", "target": 70, "date": "2026-01" },
+    { "firm": "JPMorgan", "grade": "Overweight", "target": 49, "date": "2025-01" },
+    { "firm": "Barclays", "grade": "Overweight", "target": null, "date": null },
+    { "firm": "Deutsche Bank", "grade": "Buy", "target": null, "date": "2025-11" },
+    { "firm": "Banco Santander", "grade": "Buy", "target": null, "date": null },
+    { "firm": "Kepler Cheuvreux", "grade": "Buy", "target": null, "date": null },
+    { "firm": "Citigroup", "grade": "Neutral", "target": 60, "date": "2026-05" },
+    { "firm": "Jefferies", "grade": "Hold", "target": 60, "date": "2026-03" },
+    { "firm": "Bernstein", "grade": "Market Perform", "target": null, "date": "2025-12" },
+    { "firm": "BNP Paribas Exane", "grade": "Neutral", "target": null, "date": "2025-06" },
+    { "firm": "UBS", "grade": "Neutral", "target": null, "date": null },
+    { "firm": "Goldman Sachs", "grade": "Neutral", "target": null, "date": null },
+    { "firm": "RBC Capital Markets", "grade": "Sector Perform", "target": null, "date": null }
+  ]
+}

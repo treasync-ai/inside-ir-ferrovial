@@ -52,6 +52,8 @@ export async function api(name, params = {}) {
   switch (name) {
     case 'quotes': return live('quotes.json');
     case 'peers': return live('peers.json');
+    case 'analysts': return live('analysts.json');
+    case 'dividends': return live('dividends.json');
     case 'news': return live('news.json');
     case 'calendar': return { events: [] };
     case 'financials': {

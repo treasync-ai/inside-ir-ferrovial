@@ -2,7 +2,7 @@
 
 An always-on **Investor Relations cockpit** for **Ferrovial SE (FER)** — an infinite improvement on a static IR web page. It tracks the share across its three fungible listings (**Nasdaq · BME Madrid · Euronext Amsterdam**) and brings sentiment, valuation, financials, peers, calendar and news into one fast single-page app.
 
-Built by **David Vargas Sarasqueta** as an interview-prep / portfolio project for the Ferrovial Investor Relations Analyst role.
+Built by **David Vargas Sarasqueta** — an independent investor-relations analytics tool for Ferrovial SE (FER).
 
 > Educational tool. **Not investment advice and not official Ferrovial material.**
 

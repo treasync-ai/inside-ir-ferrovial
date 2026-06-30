@@ -126,6 +126,72 @@ def build_financials(t):
     quarterly = rows_for(t.quarterly_income_stmt, t.quarterly_balance_sheet, t.quarterly_cashflow)
     return annual, quarterly
 
+def build_analysts():
+    for sym in ["FER.MC", "FER"]:
+        try:
+            t = yf.Ticker(sym)
+            rec = t.recommendations
+            if rec is None or rec.empty:
+                continue
+            row = rec.iloc[0]  # period "0m" = current
+            dist = {k: int(row[k]) for k in ["strongBuy", "buy", "hold", "sell", "strongSell"]}
+            total = sum(dist.values())
+            if total == 0:
+                continue
+            score = (dist["strongBuy"] + dist["buy"] * 2 + dist["hold"] * 3 + dist["sell"] * 4 + dist["strongSell"] * 5) / total
+            label = ("Strong Buy" if score <= 1.5 else "Buy" if score <= 2.5 else "Hold" if score <= 3.5 else "Sell" if score <= 4.5 else "Strong Sell")
+            pt = t.analyst_price_targets or {}
+            cur, mean = num(pt.get("current")), num(pt.get("mean"))
+            upside = ((mean - cur) / cur * 100) if (mean and cur) else None
+            actions, seen = [], set()
+            try:
+                u = t.upgrades_downgrades
+                if u is not None and not u.empty:
+                    for idx, r in u.iterrows():
+                        firm = str(r.get("Firm") or "").strip()
+                        if not firm or firm in seen:
+                            continue
+                        seen.add(firm)
+                        actions.append({"firm": firm, "grade": str(r.get("ToGrade") or ""), "fromGrade": str(r.get("FromGrade") or ""),
+                                        "action": str(r.get("Action") or ""),
+                                        "date": idx.date().isoformat() if hasattr(idx, "date") else str(idx),
+                                        "target": num(r.get("currentPriceTarget"))})
+                        if len(actions) >= 25:
+                            break
+            except Exception:
+                pass
+            ccy = "EUR" if sym.endswith(".MC") else "USD"
+            print("  analysts", sym, "→", total, "analysts,", label)
+            return {"symbol": sym, "currency": ccy, "distribution": dist, "total": total,
+                    "consensusScore": score, "consensusLabel": label,
+                    "priceTarget": {"current": cur, "low": num(pt.get("low")), "mean": mean,
+                                    "high": num(pt.get("high")), "median": num(pt.get("median")),
+                                    "currency": ccy, "upsidePct": upside},
+                    "actions": actions}
+        except Exception as e:
+            print("  analysts", sym, "ERR", e)
+    return {"distribution": None}
+
+def build_dividends(sym="FER.MC"):
+    try:
+        d = yf.Ticker(sym).dividends
+        if d is None or d.empty:
+            return {"symbol": sym, "currency": "EUR", "payments": [], "byYear": []}
+        payments = [{"date": idx.date().isoformat(), "amount": num(v)} for idx, v in d.items()]
+        by = {}
+        for p in payments:
+            y = int(p["date"][:4]); by[y] = by.get(y, 0) + (p["amount"] or 0)
+        by_year = [{"year": y, "total": by[y]} for y in sorted(by)]
+        cutoff = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=365)).date().isoformat()
+        ttm = sum((p["amount"] or 0) for p in payments if p["date"] >= cutoff)
+        last = payments[-1] if payments else {}
+        print("  dividends", sym, "→", len(payments), "payments, ttm", round(ttm, 4))
+        return {"symbol": sym, "currency": "EUR", "payments": payments[-24:], "byYear": by_year,
+                "ttm": ttm, "lastAmount": last.get("amount"), "lastDate": last.get("date")}
+    except Exception as e:
+        print("  dividends ERR", e)
+        return {"symbol": sym, "currency": "EUR", "payments": [], "byYear": []}
+
 def main():
     print("Fetching Ferrovial data via yfinance…")
     blocks = {}
@@ -262,6 +328,11 @@ def main():
             print("  peer", p["symbol"], "FAILED:", e)
         rows.append(row)
     write("peers.json", {"rows": rows})
+
+    # analyst coverage + dividends
+    write("analysts.json", build_analysts())
+    time.sleep(0.5)
+    write("dividends.json", build_dividends("FER.MC"))
 
     # news
     try:
