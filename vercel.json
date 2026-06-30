@@ -10,6 +10,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|css/|js/|data/|assets/|favicon).*)", "destination": "/index.html" }
   ]
 }
