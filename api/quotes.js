@@ -1,44 +1,52 @@
 // GET /api/quotes → quotes for Ferrovial's three listings + momentum sentiment.
-// Uses Yahoo's crumbless chart endpoint (works from serverless IPs); Finnhub as
-// a fallback for the US line when a key is configured.
+// Provider order: Twelve Data (server-reliable) → Yahoo REST → Finnhub (US only).
 import { FERROVIAL, SHARES } from './_lib/config.js';
+import { tdEnabled, tdQuote, tdSeries } from './_lib/twelvedata.js';
 import { quoteFromChart, chart } from './_lib/yahooRest.js';
 import { finnhubEnabled, finnhubQuote } from './_lib/finnhub.js';
 import { withCache } from './_lib/cache.js';
 import { ok, fail } from './_lib/http.js';
 
-function closeAgo(series, bars) {
-  const i = series.length - 1 - bars;
-  return i >= 0 ? series[i].close : (series[0]?.close ?? null);
+async function quoteFor(l) {
+  if (tdEnabled()) { try { return await tdQuote(l.symbol); } catch { /* fall through */ } }
+  try { return await quoteFromChart(l.symbol); } catch { /* fall through */ }
+  if (l.key === 'US' && finnhubEnabled()) { try { return await finnhubQuote('FER'); } catch { /* */ } }
+  return null;
 }
+
+const closeAgo = (s, bars) => { const i = s.length - 1 - bars; return i >= 0 ? s[i].close : (s[0]?.close ?? null); };
 
 async function momentumSentiment() {
   try {
-    const { meta, series } = await chart(FERROVIAL.primary, { range: '6mo', interval: '1d' });
-    if (series.length < 25) return null;
+    let series, hi, lo;
+    if (tdEnabled()) {
+      const r = await tdSeries(FERROVIAL.primary, { interval: '1day', outputsize: 140 });
+      series = r.series;
+      const q = await tdQuote(FERROVIAL.primary).catch(() => null);
+      hi = q?.week52High; lo = q?.week52Low;
+    } else {
+      const c = await chart(FERROVIAL.primary, { range: '6mo', interval: '1d' });
+      series = c.series; hi = c.meta.fiftyTwoWeekHigh; lo = c.meta.fiftyTwoWeekLow;
+    }
+    if (!series || series.length < 25) return null;
     const last = series[series.length - 1].close;
     const r1m = (last / closeAgo(series, 21) - 1) * 100;
     const r3m = (last / closeAgo(series, 63) - 1) * 100;
-    const hi = meta.fiftyTwoWeekHigh, lo = meta.fiftyTwoWeekLow;
     const pos = (hi && lo && hi > lo) ? (last - lo) / (hi - lo) : 0.5;
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     let index = 50 + clamp(r3m, -20, 20) / 20 * 25 + clamp(r1m, -10, 10) / 10 * 15 + (pos - 0.5) * 20;
     index = Math.round(Math.max(0, Math.min(100, index)));
     const label = index >= 70 ? 'Bullish' : index >= 58 ? 'Moderately bullish'
       : index >= 42 ? 'Neutral' : index >= 30 ? 'Moderately bearish' : 'Bearish';
-    return { index, label, basis: 'momentum', r1m, r3m, pos52: pos * 100, week52High: hi, week52Low: lo, price: last, currency: meta.currency };
+    return { index, label, basis: 'momentum', r1m, r3m, pos52: pos * 100 };
   } catch { return null; }
 }
 
 export default async function handler(req, res) {
   try {
-    const data = await withCache('quotes:v2', 60, async () => {
+    const data = await withCache('quotes:v3', 60, async () => {
       const listings = await Promise.all(FERROVIAL.listings.map(async (l) => {
-        let q = null;
-        try { q = await quoteFromChart(l.symbol); }
-        catch {
-          if (l.key === 'US' && finnhubEnabled()) { try { q = await finnhubQuote('FER'); } catch { /* */ } }
-        }
+        const q = await quoteFor(l);
         const price = q?.price ?? null;
         const shares = SHARES[l.symbol];
         return {
@@ -51,8 +59,7 @@ export default async function handler(req, res) {
           exchange: q?.exchange || l.market, marketState: q?.marketState || null
         };
       }));
-      const sentiment = await momentumSentiment();
-      return { listings, sentiment };
+      return { listings, sentiment: await momentumSentiment(), provider: tdEnabled() ? 'twelvedata' : 'yahoo' };
     });
     return ok(res, data, { cdnSeconds: 60, swr: 900 });
   } catch (err) {

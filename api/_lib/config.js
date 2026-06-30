@@ -31,6 +31,19 @@ export const PEERS = [
   { symbol: 'AENA.MC', name: 'Aena',       currency: 'EUR', type: 'Airports' }
 ];
 
+// Indicative valuation multiples (curated, ~mid-2026) — Twelve Data's free tier
+// doesn't expose P/E or EV/EBITDA, so these illustrate the premium debate while
+// price / market cap / performance come live. Editable.
+export const PEER_MULTIPLES = {
+  'FER.MC': { pe: 50, evEbitda: 31, dividendYield: 1.0, ebitdaMargin: 15 },
+  'DG.PA': { pe: 13, evEbitda: 7, dividendYield: 4.2, ebitdaMargin: 18 },
+  'FGR.PA': { pe: 9, evEbitda: 7, dividendYield: 4.0, ebitdaMargin: 16 },
+  'ACS.MC': { pe: 13, evEbitda: 8, dividendYield: 5.0, ebitdaMargin: 7 },
+  'SCYR.MC': { pe: 15, evEbitda: 9, dividendYield: 5.0, ebitdaMargin: 20 },
+  'TCL.AX': { pe: 60, evEbitda: 22, dividendYield: 5.0, ebitdaMargin: 70 },
+  'AENA.MC': { pe: 17, evEbitda: 12, dividendYield: 4.2, ebitdaMargin: 60 }
+};
+
 export const ALL_SYMBOLS = [...new Set([...FERROVIAL.listings.map(l => l.symbol), ...PEERS.map(p => p.symbol)])];
 
 export const symbolMeta = (sym) => {

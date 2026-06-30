@@ -31,13 +31,12 @@ export default async function render(root) {
 function renderTable(rows) {
   const cols = [
     ['name', 'Company', (r) => `<b>${esc(r.name)}</b><div class="small muted">${esc(r.type)}</div>`],
+    ['price', 'Price', (r) => r.price != null ? fmt.money(r.price, r.currency, 2) : '—'],
     ['marketCap', 'Mkt cap', (r) => fmt.compact(r.marketCap, r.currency)],
-    ['pe', 'P/E', (r) => fmt.num(r.pe, 1) + (r.pe != null ? 'x' : '')],
-    ['forwardPE', 'Fwd P/E', (r) => r.forwardPE != null ? fmt.num(r.forwardPE, 1) + 'x' : '—'],
-    ['evEbitda', 'EV/EBITDA', (r) => r.evEbitda != null ? fmt.num(r.evEbitda, 1) + 'x' : '—'],
-    ['priceToBook', 'P/B', (r) => r.priceToBook != null ? fmt.num(r.priceToBook, 1) + 'x' : '—'],
-    ['dividendYield', 'Div yield', (r) => r.dividendYield != null ? fmt.num(r.dividendYield, 1) + '%' : '—'],
-    ['ebitdaMargin', 'EBITDA mgn', (r) => r.ebitdaMargin != null ? fmt.num(r.ebitdaMargin, 1) + '%' : '—'],
+    ['pe', 'P/E *', (r) => r.pe != null ? fmt.num(r.pe, 0) + 'x' : '—'],
+    ['evEbitda', 'EV/EBITDA *', (r) => r.evEbitda != null ? fmt.num(r.evEbitda, 0) + 'x' : '—'],
+    ['dividendYield', 'Div yield *', (r) => r.dividendYield != null ? fmt.num(r.dividendYield, 1) + '%' : '—'],
+    ['ebitdaMargin', 'EBITDA mgn *', (r) => r.ebitdaMargin != null ? fmt.num(r.ebitdaMargin, 0) + '%' : '—'],
     ['ret1y', '1Y return', (r) => fmt.pctHTML(r.ret1y)]
   ];
   const head = cols.map((c) => `<th${c[0] === 'name' ? ' style="text-align:left"' : ''}>${c[1]}</th>`).join('');
@@ -45,5 +44,5 @@ function renderTable(rows) {
     cols.map((c, i) => `<td${i === 0 ? ' style="text-align:left"' : ''}>${c[2](r)}</td>`).join('') + `</tr>`).join('');
   document.getElementById('peers-table').innerHTML =
     `<div class="tbl-wrap"><table class="data"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>
-     <div class="small muted" style="margin-top:8px">Live multiples via Yahoo Finance. Market caps shown in local reporting currency (Transurban in AUD).</div>`;
+     <div class="small muted" style="margin-top:8px">Price, market cap &amp; 1Y return are live (Twelve Data). <b>*</b> P/E, EV/EBITDA, dividend yield &amp; EBITDA margin are curated indicative figures (~mid-2026) — the free data tier doesn’t expose them. Market caps in local reporting currency (Transurban in AUD).</div>`;
 }
