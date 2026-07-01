@@ -7,9 +7,8 @@ const RANGES = ['1d', '1w', '1m', '3m', '6m', 'ytd', '1y', '5y'];
 
 export default async function render(root) {
   root.innerHTML = pageHead('Global dashboard',
-    'Live market sentiment, the Ferrovial share across its three listings, performance over every window, and the latest headlines.') +
-    `<div id="dash-sentiment" class="mb"></div>
-     <div id="dash-listings" class="grid g3 mb"></div>
+    'The Ferrovial share across its three listings, performance over every window, and the latest headlines.') +
+    `<div id="dash-listings" class="grid g3 mb"></div>
      <div class="grid g-2-1 mb">
        <div class="card">
          <div class="spread mb"><div><h3>Ferrovial share price</h3><div class="card-sub">FER.MC · Madrid (EUR) · close prices</div></div>
@@ -22,13 +21,11 @@ export default async function render(root) {
      <div id="dash-returns" class="mb"></div>
      <div class="card"><div class="spread mb"><h3>Latest news</h3><a href="#/news" class="small">All news →</a></div><div id="dash-news">${loading('Loading headlines…')}</div></div>`;
 
-  // --- Quotes + sentiment ---
+  // --- Quotes ---
   api('quotes').then((d) => {
     document.getElementById('dash-listings').innerHTML = (d.listings || []).map(listingCard).join('');
-    renderSentiment(document.getElementById('dash-sentiment'), d.sentiment);
   }).catch(() => {
     document.getElementById('dash-listings').innerHTML = errBox('Live quotes are refreshing — the first scheduled fetch may still be running (data updates every ~30 min during market hours).');
-    document.getElementById('dash-sentiment').innerHTML = '';
   });
 
   // --- History (chart + returns + YTD) ---
@@ -60,29 +57,6 @@ export default async function render(root) {
     const items = (d.items || []).slice(0, 6);
     document.getElementById('dash-news').innerHTML = items.length ? items.map(newsRow).join('') : '<div class="muted small">No headlines available.</div>';
   }).catch(() => { document.getElementById('dash-news').innerHTML = errBox('News is refreshing — check back shortly.'); });
-}
-
-function renderSentiment(box, s) {
-  if (!s) { box.innerHTML = ''; return; }
-  const idx = s.index ?? 50;
-  const pos52 = s.pos52 != null ? s.pos52 : null;
-  box.innerHTML = `<div class="card">
-    <div class="gauge">
-      <div><div class="big">${idx}<small style="font-size:15px">/100</small></div><div class="lab"><span class="pill y">${esc(s.label)}</span></div></div>
-      <div class="meter">
-        <div class="track"><div class="needle" style="left:${Math.max(1, Math.min(99, idx))}%"></div></div>
-        <div class="spread small muted" style="margin-top:6px"><span>Bearish</span><span>Neutral</span><span>Bullish</span></div>
-      </div>
-      <div style="min-width:230px">
-        <div class="small muted">Price momentum</div>
-        <div class="row" style="gap:8px;margin-top:4px">
-          <span class="pill">1M ${fmt.pctHTML(s.r1m)}</span>
-          <span class="pill">3M ${fmt.pctHTML(s.r3m)}</span>
-        </div>
-        ${pos52 != null ? `<div class="small" style="margin-top:6px">52-week position: <b>${fmt.num(pos52, 0)}%</b> of range</div>` : ''}
-      </div>
-    </div>
-  </div>`;
 }
 
 function renderYTD(box, d) {
