@@ -17,7 +17,7 @@ Built by **David Vargas Sarasqueta** — an independent investor-relations analy
 | **📒 Financials** | Ferrovial’s reported KPIs (multi-year) + detailed IFRS statements (annual / quarterly). |
 | **🗓️ Calendar** | Upcoming earnings, dividends and milestones (live estimate + curated cadence). |
 | **📰 News** | Auto-aggregated, deduplicated Ferrovial headlines, refreshed daily. |
-| **⚖️ Peers** | Ferrovial vs Vinci, Eiffage, ACS, Sacyr, Transurban, Aena on valuation multiples. |
+| **⚖️ Peers** | Ferrovial vs Vinci, Bouygues, Sacyr, Acciona, Eiffage, Aena, OHLA, Abertis on valuation multiples. |
 | **🧮 Valuation** | Interactive **DCF** and **Sum-of-the-Parts** — move WACC, interest rates, growth and multiples and watch the implied value react. |
 | **📖 Guide** | How to use it, how it was built, and how it maps to the IR role. |
 

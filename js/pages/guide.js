@@ -22,7 +22,7 @@ export default async function render(root) {
           <li><b>📒 Financials</b> — consolidated P&amp;L 2016–2025, revenue by division and the recourse / non-recourse debt structure, plus detailed IFRS statements.</li>
           <li><b>🗓️ Calendar</b> — upcoming earnings, dividends and milestones.</li>
           <li><b>📰 News</b> — auto-aggregated, deduplicated, refreshed daily.</li>
-          <li><b>⚖️ Peers</b> — Ferrovial vs Vinci, Eiffage, ACS, Sacyr, Transurban and Aena.</li>
+          <li><b>⚖️ Peers</b> — Ferrovial vs Vinci, Bouygues, Sacyr, Acciona, Eiffage, Aena, OHLA and Abertis.</li>
           <li><b>🧮 Valuation</b> — interactive <b>DCF</b> and <b>Sum-of-the-Parts</b>: move WACC, interest rates, growth and multiples and watch the implied value move (with on-page instructions).</li>
         </ul>
       </div>

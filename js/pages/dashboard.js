@@ -82,7 +82,6 @@ function renderSentiment(box, s) {
         ${pos52 != null ? `<div class="small" style="margin-top:6px">52-week position: <b>${fmt.num(pos52, 0)}%</b> of range</div>` : ''}
       </div>
     </div>
-    <div class="small muted" style="margin-top:8px">Momentum-based sentiment (1M &amp; 3M return + position in the 52-week range). Educational, not a recommendation — analyst-consensus data needs a paid feed.</div>
   </div>`;
 }
 

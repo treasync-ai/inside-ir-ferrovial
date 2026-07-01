@@ -2,10 +2,8 @@
   "asOf": "2026-06-30",
   "corporate": [
     { "agency": "S&P Global", "rating": "BBB", "shortTerm": "A-2", "outlook": "Stable", "lastAction": "Affirmed Nov 2025" },
-    { "agency": "Fitch", "rating": "BBB", "shortTerm": "F2", "outlook": "Stable", "lastAction": "Affirmed Jun 2025" },
-    { "agency": "Moody's", "rating": "Not rated (corporate)", "shortTerm": "—", "outlook": "—", "lastAction": "Moody's rates only project-level bonds, not the Ferrovial SE issuer" }
+    { "agency": "Fitch", "rating": "BBB", "shortTerm": "F2", "outlook": "Stable", "lastAction": "Affirmed Jun 2025" }
   ],
-  "trap": "Note: Moody's does NOT assign a corporate rating to Ferrovial — its Baa1/Baa3 marks (e.g. NTE Baa1, I-66 Baa3, JFK NTO Baa3 negative) are PROJECT bonds. The corporate rating is BBB by S&P and Fitch.",
   "projectRatings": [
     { "asset": "NTE / NTE 35W (Texas managed lanes PABs)", "agency": "Moody's", "rating": "Baa1", "outlook": "Stable" },
     { "asset": "I-66 Express (Virginia)", "agency": "Moody's", "rating": "Baa3", "outlook": "Positive" },

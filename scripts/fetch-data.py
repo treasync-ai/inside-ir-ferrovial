@@ -24,23 +24,27 @@ PRIMARY = "FER.MC"
 PEERS = [
     {"symbol": "FER.MC",  "name": "Ferrovial",  "currency": "EUR", "type": "Concessions / Construction", "self": True},
     {"symbol": "DG.PA",   "name": "Vinci",      "currency": "EUR", "type": "Concessions / Construction"},
-    {"symbol": "FGR.PA",  "name": "Eiffage",    "currency": "EUR", "type": "Concessions / Construction"},
-    {"symbol": "ACS.MC",  "name": "ACS",        "currency": "EUR", "type": "Construction / Services"},
+    {"symbol": "EN.PA",   "name": "Bouygues",   "currency": "EUR", "type": "Construction / Telecom / Media"},
     {"symbol": "SCYR.MC", "name": "Sacyr",      "currency": "EUR", "type": "Concessions / Construction"},
-    {"symbol": "TCL.AX",  "name": "Transurban", "currency": "AUD", "type": "Toll roads (pure-play)"},
+    {"symbol": "ANA.MC",  "name": "Acciona",    "currency": "EUR", "type": "Infrastructure / Renewables"},
+    {"symbol": "FGR.PA",  "name": "Eiffage",    "currency": "EUR", "type": "Concessions / Construction"},
     {"symbol": "AENA.MC", "name": "Aena",       "currency": "EUR", "type": "Airports"},
+    {"symbol": "OHLA.MC", "name": "OHLA",       "currency": "EUR", "type": "Construction"},
+    {"symbol": "ABE.MC",  "name": "Abertis",    "currency": "EUR", "type": "Toll roads (private)", "private": True},
 ]
 SHARES = {"FER": 729555372, "FER.MC": 729555372, "FER.AS": 729555372,
-          "DG.PA": 580000000, "FGR.PA": 95000000, "ACS.MC": 255000000,
-          "SCYR.MC": 720000000, "TCL.AX": 3085000000, "AENA.MC": 150000000}
+          "DG.PA": 580000000, "EN.PA": 380000000, "SCYR.MC": 830000000, "ANA.MC": 54900000,
+          "FGR.PA": 95000000, "AENA.MC": 150000000, "OHLA.MC": 2700000000}
 PEER_MULTIPLES = {
     "FER.MC": {"pe": 50, "evEbitda": 31, "dividendYield": 1.0, "ebitdaMargin": 15},
     "DG.PA": {"pe": 13, "evEbitda": 7, "dividendYield": 4.2, "ebitdaMargin": 18},
-    "FGR.PA": {"pe": 9, "evEbitda": 7, "dividendYield": 4.0, "ebitdaMargin": 16},
-    "ACS.MC": {"pe": 13, "evEbitda": 8, "dividendYield": 5.0, "ebitdaMargin": 7},
+    "EN.PA": {"pe": 11, "evEbitda": 4.5, "dividendYield": 5.5, "ebitdaMargin": 9},
     "SCYR.MC": {"pe": 15, "evEbitda": 9, "dividendYield": 5.0, "ebitdaMargin": 20},
-    "TCL.AX": {"pe": 60, "evEbitda": 22, "dividendYield": 5.0, "ebitdaMargin": 70},
+    "ANA.MC": {"pe": 14, "evEbitda": 8, "dividendYield": 4.0, "ebitdaMargin": 17},
+    "FGR.PA": {"pe": 9, "evEbitda": 7, "dividendYield": 4.0, "ebitdaMargin": 16},
     "AENA.MC": {"pe": 17, "evEbitda": 12, "dividendYield": 4.2, "ebitdaMargin": 60},
+    "OHLA.MC": {"pe": None, "evEbitda": 5, "dividendYield": 0, "ebitdaMargin": 4},
+    "ABE.MC": {"pe": None, "evEbitda": 10, "dividendYield": None, "ebitdaMargin": 65},
 }
 
 def num(v):
@@ -306,6 +310,11 @@ def main():
     for p in PEERS:
         row = {"symbol": p["symbol"], "name": p["name"], "type": p["type"], "self": p.get("self", False),
                "currency": p["currency"], **PEER_MULTIPLES.get(p["symbol"], {}), "indicativeMultiples": True}
+        if p.get("private"):
+            row["private"] = True
+            rows.append(row)  # not listed — curated multiples only, no live price
+            print("  peer", p["symbol"], "→ private (curated only)")
+            continue
         try:
             t = yf.Ticker(p["symbol"])
             h = t.history(period="1y", interval="1wk")["Close"].dropna()

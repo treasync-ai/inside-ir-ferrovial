@@ -105,7 +105,6 @@ function renderRatings(r) {
   const proj = (r.projectRatings || []).map((x) => `<tr><td style="text-align:left">${esc(x.asset)}</td><td>${esc(x.agency)}</td><td>${esc(x.rating)}</td><td class="small">${esc(x.outlook)}</td></tr>`).join('');
   document.getElementById('sh-ratings').innerHTML = `<h3>Credit ratings</h3><div class="card-sub">Corporate (issuer) ratings</div>
     <div class="tbl-wrap" style="box-shadow:none"><table class="data"><thead><tr><th>Agency</th><th>LT</th><th>ST</th><th>Outlook</th><th style="text-align:left">Last action</th></tr></thead><tbody>${rows}</tbody></table></div>
-    ${callout('Note', r.trap, 'red')}
     <h4 style="margin-top:14px">Project-level bond ratings</h4>
     <div class="tbl-wrap" style="box-shadow:none"><table class="data"><thead><tr><th style="text-align:left">Asset</th><th>Agency</th><th>Rating</th><th>Outlook</th></tr></thead><tbody>${proj}</tbody></table></div>`;
 

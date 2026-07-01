@@ -5,7 +5,7 @@ import { barChart, COLORS } from '../charts.js';
 
 export default async function render(root) {
   root.innerHTML = pageHead('Ferrovial vs peers',
-    'How Ferrovial screens against six infrastructure & construction peers on valuation. Multiples are currency-neutral; market caps are in each company’s reporting currency.') +
+    'How Ferrovial screens against its European infrastructure & construction peer set on valuation. Multiples are currency-neutral; market caps are in each company’s reporting currency.') +
     `<div id="peers-table" class="mb">${loading('Loading peer valuations…')}</div>
      <div class="grid g2 mb">
        <div class="card"><h3>EV/EBITDA</h3><div class="card-sub">Lower = cheaper. Ferrovial highlighted.</div><div class="chart-box" style="height:260px"><canvas id="p-ev"></canvas></div></div>
@@ -22,15 +22,15 @@ export default async function render(root) {
     if (evItems.length) barChart(document.getElementById('p-ev'), evItems, { yFmt: (v) => fmt.num(v, 0) + 'x' });
     if (peItems.length) barChart(document.getElementById('p-pe'), peItems, { yFmt: (v) => fmt.num(v, 0) + 'x' });
     document.getElementById('peers-note').innerHTML = callout('The valuation debate',
-      'Ferrovial trades at a clear premium to construction-heavy peers (Vinci, ACS, Eiffage, Sacyr) and screens closer to pure toll-road quality (Transurban) and regulated airports (Aena). The premium reflects the duration and pricing power of its North-American toll roads — the bull case — while the 2026 sell-side downgrades (Citi, Jefferies, Bernstein) were <b>valuation-driven, not thesis-driven</b>.');
+      'Ferrovial trades at a clear premium to its construction-heavy Spanish/French peers (Vinci, Bouygues, Sacyr, Acciona, Eiffage, OHLA) and screens closer to regulated-infrastructure quality (Aena, Abertis). The premium reflects the duration and pricing power of its North-American toll roads. <b>Abertis is private</b> (delisted 2018), shown with indicative multiples only.');
   } catch {
-    document.getElementById('peers-table').innerHTML = errBox('Peer data is refreshing — check back shortly. Peer set: Vinci, Eiffage, ACS, Sacyr, Transurban, Aena.');
+    document.getElementById('peers-table').innerHTML = errBox('Peer data is refreshing — check back shortly. Peer set: Vinci, Bouygues, Sacyr, Acciona, Eiffage, Aena, OHLA, Abertis.');
   }
 }
 
 function renderTable(rows) {
   const cols = [
-    ['name', 'Company', (r) => `<b>${esc(r.name)}</b><div class="small muted">${esc(r.type)}</div>`],
+    ['name', 'Company', (r) => `<b>${esc(r.name)}</b>${r.private ? ' <span class="tag">private</span>' : ''}<div class="small muted">${esc(r.type)}</div>`],
     ['price', 'Price', (r) => r.price != null ? fmt.money(r.price, r.currency, 2) : '—'],
     ['marketCap', 'Mkt cap', (r) => fmt.compact(r.marketCap, r.currency)],
     ['pe', 'P/E *', (r) => r.pe != null ? fmt.num(r.pe, 0) + 'x' : '—'],
@@ -44,5 +44,5 @@ function renderTable(rows) {
     cols.map((c, i) => `<td${i === 0 ? ' style="text-align:left"' : ''}>${c[2](r)}</td>`).join('') + `</tr>`).join('');
   document.getElementById('peers-table').innerHTML =
     `<div class="tbl-wrap"><table class="data"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>
-     <div class="small muted" style="margin-top:8px">Price, market cap &amp; 1Y return are live (Twelve Data). <b>*</b> P/E, EV/EBITDA, dividend yield &amp; EBITDA margin are curated indicative figures (~mid-2026) — the free data tier doesn’t expose them. Market caps in local reporting currency (Transurban in AUD).</div>`;
+     <div class="small muted" style="margin-top:8px">Price, market cap &amp; 1Y return are live (Twelve Data). <b>*</b> P/E, EV/EBITDA, dividend yield &amp; EBITDA margin are curated indicative figures (~mid-2026) — the free data tier doesn’t expose them. Abertis is private (delisted 2018) — indicative multiples only, no live price.</div>`;
 }
