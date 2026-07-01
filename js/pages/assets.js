@@ -34,7 +34,8 @@ function etrCard(e) {
   const c = e.currency;
   return `<div class="card mb">
     <div class="spread mb"><div><h3>407 ETR — Toronto <span class="pill y" style="font-size:11px">crown jewel · 48.29%</span></h3>
-      <div class="card-sub">108-km all-electronic toll road · concession to 2098 · figures ${c}m (100%)</div></div></div>
+      <div class="card-sub">108-km all-electronic toll road · concession to 2098 · figures ${c}m (100%)</div></div>
+      <a href="#/valuation?asset=etr407" class="small" style="white-space:nowrap">Value in SOTP →</a></div>
     <div class="grid g4 mb">
       ${stat('Revenue 2025', cy(c) + fmt.int(last(e.revenue)) + 'm', 'vs ' + cy(c) + fmt.int(e.revenue[e.revenue.length - 2]) + 'm')}
       ${stat('EBITDA 2025', cy(c) + fmt.int(last(e.ebitda)) + 'm', fmt.num(last(e.ebitda) / last(e.revenue) * 100, 1) + '% margin')}
@@ -73,7 +74,8 @@ function lanesCard(l) {
   }).join('');
   return `<div class="card mb">
     <div class="spread mb"><div><h3>US Managed Lanes <span class="pill y" style="font-size:11px">Cintra · dynamic tolling</span></h3>
-      <div class="card-sub">Texas (NTE, LBJ, NTE 35W), North Carolina (I-77), Virginia (I-66) · figures ${c}m (100%), 2025</div></div></div>
+      <div class="card-sub">Texas (NTE, LBJ, NTE 35W), North Carolina (I-77), Virginia (I-66) · figures ${c}m (100%), 2025</div></div>
+      <a href="#/valuation?asset=lanes" class="small" style="white-space:nowrap">Value in SOTP →</a></div>
     <div class="tbl-wrap" style="box-shadow:none"><table class="data"><thead><tr>
       <th style="text-align:left">Asset</th><th>Traffic (m)</th><th>Rev/tx</th><th>Revenue</th><th>EBITDA</th><th>Margin</th><th>Contrib. FER</th>
     </tr></thead><tbody>${rows}</tbody></table></div>
@@ -97,7 +99,7 @@ function drawLanes(l) {
 function dalamanCard(d) {
   const c = d.currency;
   return `<div class="card">
-    <h3>Dalaman Airport <span class="pill" style="font-size:11px">60% · Türkiye</span></h3>
+    <div class="spread"><h3>Dalaman Airport <span class="pill" style="font-size:11px">60% · Türkiye</span></h3><a href="#/valuation?asset=airports" class="small">Value in SOTP →</a></div>
     <div class="card-sub">Concession to 2042 · figures ${c}m</div>
     <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
       ${stat('Passengers 2025', fmt.num(last(d.pax), 1) + 'm')}
@@ -117,7 +119,7 @@ function drawDalaman(d) {
 /* ---------- Energy ---------- */
 function energyCard(e) {
   return `<div class="card">
-    <h3>Energy <span class="pill" style="font-size:11px">emerging</span></h3>
+    <div class="spread"><h3>Energy <span class="pill" style="font-size:11px">emerging</span></h3><a href="#/valuation?asset=energy" class="small">Value in SOTP →</a></div>
     <div class="card-sub">Solar PV + transmission · figures €m</div>
     <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
       ${stat('Revenue 2025', '€' + fmt.int(last(e.revenue)) + 'm')}
@@ -131,7 +133,7 @@ function energyCard(e) {
 /* ---------- Construction ---------- */
 function constructionCard(c) {
   return `<div class="card mb">
-    <div class="spread mb"><div><h3>Construction</h3><div class="card-sub">Captive builder of the concessions pipeline + Budimex (Poland) + Webber (US) · €m</div></div></div>
+    <div class="spread mb"><div><h3>Construction</h3><div class="card-sub">Captive builder of the concessions pipeline + Budimex (Poland) + Webber (US) · €m</div></div><a href="#/valuation?asset=construction" class="small" style="white-space:nowrap">Value in SOTP →</a></div>
     <div class="grid g4 mb">
       ${stat('Revenue 2025', '€' + fmt.int(last(c.revenue)) + 'm')}
       ${stat('Adj. EBIT 2025', '€' + fmt.int(last(c.adjEbit)) + 'm', fmt.num(last(c.adjEbit) / last(c.revenue) * 100, 1) + '% margin')}

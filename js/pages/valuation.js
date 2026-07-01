@@ -47,6 +47,18 @@ export default async function render(root) {
   renderGlobals();
   renderDrivers();
   recompute();
+
+  // deep-link from the Assets page: #/valuation?asset=<id> → highlight that driver
+  const target = new URLSearchParams((location.hash.split('?')[1]) || '').get('asset');
+  if (target) setTimeout(() => highlightAsset(target), 60);
+}
+
+function highlightAsset(id) {
+  const el = document.getElementById('driver-' + id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 2400);
 }
 
 const setLive = () => { const el = document.getElementById('val-live'); if (el) el.textContent = live.price ? fmt.money(live.price, 'EUR', 2) + (live.source === 'live' ? '' : ' (est.)') : '—'; };
@@ -84,8 +96,10 @@ function renderDrivers() {
   const box = document.getElementById('val-drivers');
   if (tab === 'sotp') {
     box.innerHTML = `<h5>Assumptions by asset</h5>` + MODEL.sotp.assets.map((a) => `
-      <div style="margin:6px 0 2px"><b style="font-size:12.5px">${esc(a.name)}</b> <span class="tag">${esc(a.method.split(' ')[0])}</span></div>
-      ${Object.entries(a.params).map(([k, p]) => sliderRow(`${a.id}-${k}`, p.label, p, `data-asset="${a.id}" data-key="${k}"`)).join('')}`).join('');
+      <div class="driver-block" id="driver-${a.id}">
+        <div style="margin:6px 0 2px"><b style="font-size:12.5px">${esc(a.name)}</b> <span class="tag">${esc(a.method.split(' ')[0])}</span></div>
+        ${Object.entries(a.params).map(([k, p]) => sliderRow(`${a.id}-${k}`, p.label, p, `data-asset="${a.id}" data-key="${k}"`)).join('')}
+      </div>`).join('');
   } else {
     const d = MODEL.dcf;
     box.innerHTML = `<h5>DCF assumptions</h5>` + ['baseFcfEur', 'fcfGrowth', 'years', 'terminalGrowth', 'netCashEur']

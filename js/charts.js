@@ -59,7 +59,12 @@ export function multiLine(canvas, labels, datasets, { yFmt, legend = true } = {}
 export function barChart(canvas, items, { yFmt, horizontal = false } = {}) {
   destroy(canvas);
   const o = baseOpts(yFmt);
-  if (horizontal) o.indexAxis = 'y';
+  if (horizontal) {
+    o.indexAxis = 'y';
+    // value axis is now x; keep category labels on the y axis
+    o.scales.x.ticks.callback = (v) => yFmt ? yFmt(v) : v;
+    o.scales.y.ticks.callback = function (v) { return this.getLabelForValue(v); };
+  }
   return keep(canvas, new Chart(canvas.getContext('2d'), {
     type: 'bar',
     data: {

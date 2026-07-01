@@ -117,6 +117,9 @@ table.data tr.self td:first-child{background:var(--yellow-l)}
 .val-sidebar{position:sticky;top:132px;max-height:calc(100vh - 150px);overflow:auto}
 .val-sidebar h5{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 2px;font-weight:700}
 @media(max-width:900px){.val-layout{grid-template-columns:1fr}.val-sidebar{position:static;max-height:none}}
+.driver-block{border-radius:8px;padding:2px 8px;margin:0 -8px 4px;scroll-margin-top:12px}
+.driver-block.flash{animation:flashbg 2.4s ease}
+@keyframes flashbg{0%,20%{background:var(--yellow-l);box-shadow:0 0 0 2px var(--yellow) inset}100%{background:transparent;box-shadow:none}}
 
 /* ---------- sliders (valuation) ---------- */
 .slider-row{display:grid;grid-template-columns:1fr 86px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line)}
