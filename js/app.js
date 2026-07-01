@@ -3,6 +3,8 @@ import dashboard from './pages/dashboard.js';
 import share from './pages/share.js';
 import analysts from './pages/analysts.js';
 import assets from './pages/assets.js';
+import ownership from './pages/ownership.js';
+import esg from './pages/esg.js';
 import financials from './pages/financials.js';
 import calendar from './pages/calendar.js';
 import news from './pages/news.js';
@@ -10,7 +12,7 @@ import peers from './pages/peers.js';
 import valuation from './pages/valuation.js';
 import guide from './pages/guide.js';
 
-const routes = { dashboard, share, analysts, assets, financials, calendar, news, peers, valuation, guide };
+const routes = { dashboard, share, assets, valuation, peers, analysts, ownership, financials, esg, news, calendar, guide };
 const DEFAULT = 'dashboard';
 
 const app = document.getElementById('app');

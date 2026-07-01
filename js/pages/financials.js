@@ -106,7 +106,13 @@ function renderDebt(p) {
     <h4 style="margin-top:16px">Debt structure (2025)</h4>
     <div class="tbl-wrap" style="box-shadow:none"><table class="data"><thead><tr><th style="text-align:left">Bucket</th><th>% fixed</th><th>Avg rate</th><th>Avg maturity</th></tr></thead>
       <tbody>${structRow('Ex-projects (corporate)', bk.exInfra)}${structRow('Infrastructure projects', bk.projects)}</tbody></table></div>
-    ${callout('Why this matters', 'The ~€5.9bn consolidated net debt is almost entirely <b>non-recourse project debt</b> (96% fixed, ~18-yr average life) that does not contaminate the parent. At the corporate level Ferrovial runs a <b>net cash</b> position (~€1.3bn), 99% fixed at ~2% over ~3 years.')}`;
+    ${(nd.maturities && nd.maturities.length) ? `<h4 style="margin-top:16px">Corporate debt maturities (€m)</h4>
+      <div class="chart-box" style="height:180px"><canvas id="fin-mat"></canvas></div>` : ''}
+    ${callout('Why this matters', 'The ~€5.9bn consolidated net debt is almost entirely <b>non-recourse project debt</b> (96% fixed, ~18-yr average life) that does not contaminate the parent. At the corporate level Ferrovial runs a <b>net cash</b> position (~€1.3bn), 99% fixed at ~2% over ~3 years, with a light near-term maturity profile.')}`;
+  if (nd.maturities && nd.maturities.length) {
+    const c = document.getElementById('fin-mat');
+    if (c) barChart(c, nd.maturities.map((m) => ({ label: m.year, value: m.amount, self: m.year === '2026' })), { yFmt: (v) => '€' + fmt.int(v) });
+  }
 }
 
 function renderDetail(d) {

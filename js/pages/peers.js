@@ -1,17 +1,26 @@
 import { api } from '../api.js';
 import { fmt, esc } from '../util.js';
 import { pageHead, loading, errBox, callout } from '../ui.js';
-import { barChart, COLORS } from '../charts.js';
+import { barChart, multiLine, COLORS } from '../charts.js';
 
 export default async function render(root) {
   root.innerHTML = pageHead('Ferrovial vs peers',
-    'How Ferrovial screens against its European infrastructure & construction peer set on valuation. Multiples are currency-neutral; market caps are in each company’s reporting currency.') +
+    'How Ferrovial screens against its European infrastructure & construction peer set on valuation and total return.') +
     `<div id="peers-table" class="mb">${loading('Loading peer valuations…')}</div>
      <div class="grid g2 mb">
        <div class="card"><h3>EV/EBITDA</h3><div class="card-sub">Lower = cheaper. Ferrovial highlighted.</div><div class="chart-box" style="height:260px"><canvas id="p-ev"></canvas></div></div>
        <div class="card"><h3>P/E (trailing)</h3><div class="card-sub">Ferrovial highlighted.</div><div class="chart-box" style="height:260px"><canvas id="p-pe"></canvas></div></div>
      </div>
+     <div class="card mb"><h3>Relative performance — 3-year</h3><div class="card-sub">Total return rebased to 100 · Ferrovial vs Vinci, Aena, Sacyr &amp; IBEX 35</div>
+       <div class="chart-box" style="height:300px"><canvas id="p-tsr"></canvas></div></div>
      <div id="peers-note"></div>`;
+
+  api('tsr').then((t) => {
+    const names = Object.keys(t.series || {});
+    if (!names.length) return;
+    const colors = { Ferrovial: COLORS.YELLOW, Vinci: '#2c6cb0', Aena: '#159a5b', Sacyr: '#e2614d', 'IBEX 35': COLORS.GRAY };
+    multiLine(document.getElementById('p-tsr'), t.labels, names.map((n) => ({ label: n, data: t.series[n], color: colors[n] || COLORS.GRAY, width: n === 'Ferrovial' ? 2.5 : 1.5 })), { yFmt: (v) => fmt.num(v, 0) });
+  }).catch(() => {});
 
   try {
     const d = await api('peers');

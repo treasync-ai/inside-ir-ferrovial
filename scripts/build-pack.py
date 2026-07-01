@@ -107,6 +107,30 @@ for k, (lab, vals, _) in enumerate(rn):
         elif "average rate" in ll: nd["buckets"].setdefault(section, {})["rate"] = vals
         elif "average maturity" in ll: nd["buckets"].setdefault(section, {})["maturity"] = vals
 
+# debt maturity schedule — read raw rows (values sit outside the year columns)
+maturities = []
+dfnd = pd.read_excel(F, sheet_name="Consolidated Net debt", header=None)
+for i in range(len(dfnd)):
+    c1 = dfnd.iat[i, 1] if dfnd.shape[1] > 1 else None
+    if isinstance(c1, str) and "debt matur" in c1.lower():
+        for j in range(i + 1, min(i + 9, len(dfnd))):
+            lab = dfnd.iat[j, 1]
+            if isinstance(lab, str):
+                key = lab.strip().rstrip("*")
+            elif isinstance(lab, (int, float)) and not (isinstance(lab, float) and math.isnan(lab)):
+                key = str(int(lab))
+            else:
+                key = ""
+            if key.isdigit() or key.startswith(">"):
+                row = list(dfnd.iloc[j])[2:]  # skip the label/year columns
+                amt = next((v for v in reversed(row) if isinstance(v, (int, float)) and not (isinstance(v, float) and math.isnan(v))), None)
+                if amt is not None:
+                    maturities.append({"year": key, "amount": round(float(amt), 2)})
+            elif key == "" and maturities:
+                break
+        break
+nd["maturities"] = maturities
+
 json.dump({"currency": "EUR", "unit": "EUR million", "income": fin, "netDebt": nd},
           open(os.path.join(ROOT, "data", "pack-financials.json"), "w"), ensure_ascii=False)
 print("financials: revenue2025", fin["revenue"][-1] if fin["revenue"] else None,

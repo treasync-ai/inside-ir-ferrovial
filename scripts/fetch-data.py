@@ -196,6 +196,29 @@ def build_dividends(sym="FER.MC"):
         print("  dividends ERR", e)
         return {"symbol": sym, "currency": "EUR", "payments": [], "byYear": []}
 
+TSR_SET = [("FER.MC", "Ferrovial"), ("DG.PA", "Vinci"), ("AENA.MC", "Aena"), ("SCYR.MC", "Sacyr"), ("^IBEX", "IBEX 35")]
+
+def build_tsr():
+    frames = {}
+    for sym, name in TSR_SET:
+        try:
+            h = yf.Ticker(sym).history(period="3y", interval="1wk")["Close"].dropna()
+            if not h.empty:
+                frames[name] = h
+        except Exception as e:
+            print("  tsr", sym, "ERR", e)
+    if "Ferrovial" not in frames:
+        return {"labels": [], "series": {}}
+    base_idx = frames["Ferrovial"].index
+    labels = [d.date().isoformat() for d in base_idx]
+    series = {}
+    for name, h in frames.items():
+        aligned = h.reindex(base_idx, method="ffill")
+        first = next((float(v) for v in aligned if pd.notna(v)), None)
+        series[name] = [round(float(v) / first * 100, 1) if (pd.notna(v) and first) else None for v in aligned]
+    print("  tsr →", len(labels), "weeks,", len(series), "series")
+    return {"labels": labels, "series": series}
+
 def main():
     print("Fetching Ferrovial data via yfinance…")
     blocks = {}
@@ -338,10 +361,12 @@ def main():
         rows.append(row)
     write("peers.json", {"rows": rows})
 
-    # analyst coverage + dividends
+    # analyst coverage + dividends + relative performance (TSR)
     write("analysts.json", build_analysts())
     time.sleep(0.5)
     write("dividends.json", build_dividends("FER.MC"))
+    time.sleep(0.5)
+    write("tsr.json", build_tsr())
 
     # news
     try:

@@ -1,0 +1,39 @@
+{
+  "asOf": "2025-12-31",
+  "source": "Ferrovial Equity Story & Fact Book (AFM register)",
+  "sharesOutstanding": 729555372,
+  "holders": [
+    { "name": "Rafael del Pino (Rijn Capital)", "pct": 21.53, "type": "Founding family" },
+    { "name": "TCI — The Children's Investment Fund", "pct": 10.03, "type": "Institutional" },
+    { "name": "María del Pino (Menosmares)", "pct": 8.64, "type": "Founding family" },
+    { "name": "BlackRock", "pct": 4.33, "type": "Institutional (passive)" },
+    { "name": "Free float", "pct": 55.46, "type": "Free float" }
+  ],
+  "familyAggregate": "~34–35%",
+  "geographic": {
+    "asOf": "2024-12-31 (CMi2i, institutional base)",
+    "split": [
+      { "region": "Europe ex-Spain", "pct": 54 },
+      { "region": "North America", "pct": 27 },
+      { "region": "Rest of world", "pct": 14 },
+      { "region": "Spain", "pct": 5 }
+    ]
+  },
+  "usBase": "Ferrovial re-domiciled to the Netherlands (2023) and listed on Nasdaq (9 May 2024) to broaden its US investor base and re-rate toward US infrastructure peers. North America is ~27% of the institutional register (Dec-2024) — the metric IR aims to grow, given ~80–86% of equity value is North American. BlackRock has been building since Nasdaq-100 inclusion (Dec-2025).",
+  "governance": {
+    "chairman": "Rafael del Pino y Calvo-Sotelo (Executive Chairman)",
+    "ceo": "Ignacio Madridejos",
+    "board": "~9 of 12 directors independent (Dutch & US standards)",
+    "votingRights": "One-share-one-vote — no dual-class shares, no golden shares. Control rests on ordinary-share aggregation.",
+    "domicile": "Ferrovial SE (Societas Europaea), Netherlands"
+  },
+  "capital": {
+    "buyback": "Up to €800m (max 15m shares, ~2.04%), Dec 2025 → Oct 2026, executed by Goldman Sachs.",
+    "dividend": "Ferrovial Flexible Dividend (scrip): shareholders elect new shares or cash; treasury shares cancelled to offset dilution.",
+    "listings": [
+      { "market": "Nasdaq", "ticker": "FER", "currency": "USD", "since": "2024-05-09" },
+      { "market": "BME Madrid (IBEX 35)", "ticker": "FER.MC", "currency": "EUR", "since": "1999" },
+      { "market": "Euronext Amsterdam", "ticker": "FER.AS", "currency": "EUR", "since": "2023" }
+    ]
+  }
+}

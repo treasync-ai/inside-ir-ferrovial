@@ -1,0 +1,36 @@
+{
+  "asOf": "2026-06-30",
+  "strategy": {
+    "name": "2030 Sustainability Strategy",
+    "framework": "\"NOW\" — three pillars",
+    "pillars": [
+      { "name": "NOW Respect", "desc": "Environment: decarbonisation, climate resilience, minimise impact." },
+      { "name": "NOW People", "desc": "Communities & employees: health & safety, diverse talent, social impact." },
+      { "name": "NOW Right", "desc": "Governance, integrity & innovation: ethics, transparency, long-term value." }
+    ]
+  },
+  "targets": {
+    "validation": "Science Based Targets initiative (SBTi), validated Feb 2025, 1.5°C-aligned",
+    "baseline": 2020,
+    "items": [
+      { "kpi": "Scope 1 & 2 emissions", "target": "−42% by 2030", "vs": "2020" },
+      { "kpi": "Scope 3 emissions", "target": "−25% by 2030", "vs": "2020" },
+      { "kpi": "Renewable electricity", "target": "100% from 2025", "vs": "" },
+      { "kpi": "Net-zero", "target": "by 2050 or earlier", "vs": "" }
+    ],
+    "progress": { "metric": "Scope 1 & 2 absolute emissions", "baseline2020": 522473, "latest": 284009, "unit": "tCO₂e" }
+  },
+  "ratings": [
+    { "provider": "MSCI ESG", "value": "A", "scale": "AAA–CCC", "band": "good" },
+    { "provider": "Sustainalytics", "value": "20.2", "scale": "Risk (lower=better)", "band": "medium" },
+    { "provider": "S&P Global CSA / DJSI", "value": "81 / 100", "scale": "Best-in-Class", "band": "good" },
+    { "provider": "CDP Climate", "value": "A List", "scale": "A–D", "band": "leader" },
+    { "provider": "CDP Water", "value": "A List", "scale": "A–D", "band": "leader" },
+    { "provider": "EcoVadis", "value": "Gold (80)", "scale": "Medal", "band": "good" },
+    { "provider": "FTSE4Good", "value": "Constituent", "scale": "Index", "band": "good" },
+    { "provider": "ISS ESG", "value": "Prime (C+)", "scale": "Prime status", "band": "good" }
+  ],
+  "financing": "Sustainability-Linked Financing Framework (KPI/target-based, DNV second-party opinion) — coupon step-ups tied to the SBTi-aligned GHG targets. Not a use-of-proceeds green bond.",
+  "reporting": "Integrated Annual Report (financial + ESG) with EY limited assurance on the sustainability statement (CSRD-aligned); CDP Climate & Water questionnaires; EU Taxonomy disclosures.",
+  "note": "ESG ratings are point-in-time and change frequently — verify against the latest disclosures before external use."
+}
