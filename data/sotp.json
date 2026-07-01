@@ -7,9 +7,13 @@
     "fx": { "usdeur": 0.92, "cadeur": 0.66 }
   },
   "globals": {
-    "wacc": { "value": 0.075, "min": 0.05, "max": 0.11, "step": 0.0025, "label": "WACC / discount rate" },
     "riskFreeRate": { "value": 0.035, "min": 0.0, "max": 0.06, "step": 0.0025, "label": "Risk-free rate (10y)" },
-    "tollGrowth": { "value": 0.06, "min": 0.0, "max": 0.12, "step": 0.005, "label": "Toll cash-flow growth (g)" }
+    "beta": { "value": 0.8, "min": 0.5, "max": 1.5, "step": 0.05, "label": "Beta" },
+    "erp": { "value": 0.05, "min": 0.03, "max": 0.08, "step": 0.0025, "label": "Equity risk premium" },
+    "tollGrowth": { "value": 0.06, "min": 0.0, "max": 0.12, "step": 0.005, "label": "407 toll cash-flow growth (g)" },
+    "eurusd": { "value": 1.09, "min": 0.95, "max": 1.25, "step": 0.01, "label": "EUR / USD" },
+    "eurcad": { "value": 1.51, "min": 1.30, "max": 1.75, "step": 0.01, "label": "EUR / CAD" },
+    "shares": { "value": 729.555, "min": 680, "max": 760, "step": 1, "label": "Shares outstanding (m)" }
   },
   "sotp": {
     "assets": [
@@ -17,20 +21,21 @@
         "id": "etr407", "name": "407 ETR", "stake": "48.29%", "method": "Dividend Discount (finite to 2098)", "model": "ddm",
         "color": "#f2b705",
         "params": {
-          "baseDividendEur": { "value": 490, "min": 300, "max": 800, "step": 10, "label": "Ferrovial's dividend, €m (pack: CAD 1.5bn × 48.29%)" },
+          "baseDividendCad": { "value": 740, "min": 450, "max": 1200, "step": 10, "label": "Ferrovial's 407 dividend, CADm (CAD 1.5bn × 48.29%)" },
           "years": { "value": 72, "min": 30, "max": 72, "step": 1, "label": "Years to concession end (2098)" }
         },
-        "note": "The crown jewel. Valued on the cash it pays Ferrovial (CAD 1.5bn total dividend in 2025 × 48.29%), grown at the global toll-growth rate over the concession to 2098."
+        "note": "The crown jewel. Valued on the CAD dividend it pays Ferrovial, grown at the global toll-growth rate over the concession to 2098, converted to EUR at the EUR/CAD rate."
       },
       {
         "id": "lanes", "name": "US Managed Lanes", "stake": "54–72%", "method": "EV/EBITDA (proportionate)", "model": "evEbitda",
         "color": "#d99a00",
         "params": {
-          "propEbitdaEur": { "value": 588, "min": 400, "max": 900, "step": 10, "label": "Ferrovial-share EBITDA, €m (pack, by stake)" },
-          "multiple": { "value": 29, "min": 15, "max": 45, "step": 1, "label": "EV/EBITDA (x)" },
-          "netDebtEur": { "value": 3000, "min": 1500, "max": 5000, "step": 100, "label": "Proportionate net debt (€m)" }
+          "propEbitdaUsd": { "value": 640, "min": 400, "max": 950, "step": 10, "label": "Ferrovial-share EBITDA, USDm (pack, by stake)" },
+          "growth": { "value": 0.08, "min": 0.0, "max": 0.18, "step": 0.005, "label": "EBITDA growth (3-yr forward)" },
+          "multiple": { "value": 23, "min": 12, "max": 40, "step": 1, "label": "Exit EV/EBITDA (x)" },
+          "netDebtUsd": { "value": 3270, "min": 1500, "max": 5500, "step": 100, "label": "Proportionate net debt (USDm)" }
         },
-        "note": "NTE, LBJ, NTE 35W, I-77, I-66. Dynamic congestion pricing drives revenue-per-transaction above inflation. High multiples reflect ramp-up & pricing power (no cap on I-66/I-77)."
+        "note": "NTE, LBJ, NTE 35W, I-77, I-66. Modelled as EBITDA grown for 3 years at the growth rate, valued on an exit EV/EBITDA, less net debt, converted to EUR at the EUR/USD rate. Dynamic congestion pricing drives revenue-per-transaction above inflation (no cap on I-66/I-77)."
       },
       {
         "id": "airports", "name": "Airports (JFK NTO + Dalaman)", "stake": "49% / 60%", "method": "Multiple of invested equity", "model": "multipleOfBook",

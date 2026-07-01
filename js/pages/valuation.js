@@ -17,9 +17,8 @@ export default async function render(root) {
          <div class="spread"><h3 style="font-size:16px">Model drivers</h3></div>
          <div class="small muted" style="margin-bottom:8px">Live price <b id="val-live">…</b></div>
          <div class="range-btns" id="val-tabs" style="margin-bottom:10px"><button data-t="sotp" class="active">SOTP</button><button data-t="dcf">DCF (group)</button></div>
-         <h5>Discount &amp; growth</h5>
+         <h5>Cost of capital (CAPM)</h5>
          <div id="val-globals"></div>
-         <div class="small muted" style="margin-top:4px">Raising the risk-free rate pushes WACC with it — long-duration value falls as rates rise.</div>
          <div id="val-drivers"></div>
        </aside>
        <div>
@@ -67,14 +66,23 @@ function initState(m) {
   const assets = {};
   m.sotp.assets.forEach((a) => { assets[a.id] = {}; Object.entries(a.params).forEach(([k, p]) => { assets[a.id][k] = p.value; }); });
   const dcf = {}; ['baseFcfEur', 'fcfGrowth', 'years', 'terminalGrowth', 'netCashEur'].forEach((k) => { dcf[k] = m.dcf[k].value; });
-  return { wacc: m.globals.wacc.value, rf: m.globals.riskFreeRate.value, tollGrowth: m.globals.tollGrowth.value, assets, dcf };
+  const g = m.globals;
+  const s = { rf: g.riskFreeRate.value, beta: g.beta.value, erp: g.erp.value, tollGrowth: g.tollGrowth.value,
+    eurusd: g.eurusd.value, eurcad: g.eurcad.value, shares: g.shares.value, assets, dcf };
+  s.wacc = s.rf + s.beta * s.erp; // CAPM-built discount rate
+  return s;
 }
 
 // ---------- sliders ----------
 function fmtParam(key, v) {
-  if (/wacc|growth|rf|Rate|terminal/i.test(key)) return (v * 100).toFixed(2) + '%';
+  if (/beta/i.test(key)) return fmt.num(v, 2);
+  if (/eurusd|eurcad/i.test(key)) return fmt.num(v, 2);
+  if (/shares/i.test(key)) return fmt.num(v, 0) + 'm';
+  if (/growth|erp|rf|Rate|terminal/i.test(key)) return (v * 100).toFixed(2) + '%';
   if (/multiple/i.test(key)) return fmt.num(v, 1) + 'x';
   if (/years/i.test(key)) return Math.round(v) + 'y';
+  if (/Cad/i.test(key)) return 'C$' + fmt.int(v) + 'm';
+  if (/Usd/i.test(key)) return '$' + fmt.int(v) + 'm';
   if (/Eur/i.test(key)) return '€' + fmt.int(v) + 'm';
   return fmt.num(v, 2);
 }
@@ -86,9 +94,16 @@ function sliderRow(idKey, label, p, extra = '') {
 function renderGlobals() {
   const g = MODEL.globals;
   document.getElementById('val-globals').innerHTML =
-    sliderRow('g-wacc', g.wacc.label, g.wacc, 'class="global-slider" data-g="wacc"') +
     sliderRow('g-rf', g.riskFreeRate.label, g.riskFreeRate, 'class="global-slider" data-g="rf"') +
-    sliderRow('g-tollGrowth', g.tollGrowth.label, g.tollGrowth, 'class="global-slider" data-g="tollGrowth"');
+    sliderRow('g-beta', g.beta.label, g.beta, 'class="global-slider" data-g="beta"') +
+    sliderRow('g-erp', g.erp.label, g.erp, 'class="global-slider" data-g="erp"') +
+    `<div class="small" style="margin:2px 0 4px">Implied WACC (rf + β·ERP): <b id="val-wacc" style="color:var(--yellow-d)">${(state.wacc * 100).toFixed(2)}%</b></div>` +
+    `<h5>Growth &amp; FX</h5>` +
+    sliderRow('g-tollGrowth', g.tollGrowth.label, g.tollGrowth, 'class="global-slider" data-g="tollGrowth"') +
+    sliderRow('g-eurusd', g.eurusd.label, g.eurusd, 'class="global-slider" data-g="eurusd"') +
+    sliderRow('g-eurcad', g.eurcad.label, g.eurcad, 'class="global-slider" data-g="eurcad"') +
+    `<h5>Shares</h5>` +
+    sliderRow('g-shares', g.shares.label, g.shares, 'class="global-slider" data-g="shares"');
   document.querySelectorAll('#val-globals .global-slider').forEach((inp) => inp.addEventListener('input', onGlobalInput));
 }
 
@@ -110,14 +125,12 @@ function renderDrivers() {
 
 function onGlobalInput(e) {
   const key = e.target.dataset.g, v = parseFloat(e.target.value);
-  if (key === 'rf') {
-    const delta = v - state.rf; state.rf = v;
-    state.wacc = Math.max(0.03, Math.min(0.12, state.wacc + delta));
-    const w = document.querySelector('.global-slider[data-g="wacc"]');
-    if (w) { w.value = state.wacc; document.getElementById('out-g-wacc').textContent = fmtParam('wacc', state.wacc); }
-  } else if (key === 'tollGrowth') { state.tollGrowth = v; }
-  else { state.wacc = v; }
-  document.getElementById('out-g-' + key).textContent = fmtParam(key, v);
+  state[key] = v;
+  if (key === 'rf' || key === 'beta' || key === 'erp') {
+    state.wacc = state.rf + state.beta * state.erp;
+    const w = document.getElementById('val-wacc'); if (w) w.textContent = (state.wacc * 100).toFixed(2) + '%';
+  }
+  document.getElementById('out-g-' + key).textContent = fmtParam('g-' + key, v);
   recompute();
 }
 function onParamInput(e) {
@@ -135,8 +148,8 @@ function growingAnnuityPV(d1, g, r, n) {
 function assetValue(a) {
   const s = state.assets[a.id];
   switch (a.model) {
-    case 'ddm': return growingAnnuityPV(s.baseDividendEur, state.tollGrowth, state.wacc, s.years);
-    case 'evEbitda': return s.propEbitdaEur * s.multiple - s.netDebtEur;
+    case 'ddm': return growingAnnuityPV(s.baseDividendCad / state.eurcad, state.tollGrowth, state.wacc, s.years);
+    case 'evEbitda': return (s.propEbitdaUsd * Math.pow(1 + s.growth, 3) * s.multiple - s.netDebtUsd) / state.eurusd;
     case 'evEbit': return s.adjEbitEur * s.multiple;
     case 'multipleOfBook': return s.bookEur * s.multiple;
     case 'fixed': return s.valueEur;
@@ -146,7 +159,7 @@ function assetValue(a) {
 function computeSOTP() {
   const assets = MODEL.sotp.assets.map((a) => ({ id: a.id, name: a.name, color: a.color, value: assetValue(a) }));
   const total = assets.reduce((s, x) => s + x.value, 0);
-  return { assets, total, perShare: total / MODEL.group.sharesOutstanding };
+  return { assets, total, perShare: total / state.shares };
 }
 function computeDCF() {
   const { baseFcfEur: base, fcfGrowth: g, years: N, terminalGrowth: gt, netCashEur: cash } = state.dcf;
@@ -154,7 +167,7 @@ function computeDCF() {
   for (let t = 1; t <= N; t++) { last = base * Math.pow(1 + g, t); pv += last / Math.pow(1 + r, t); }
   const tv = (r > gt) ? (last * (1 + gt)) / (r - gt) : last * 25;
   const pvTerminal = tv / Math.pow(1 + r, N), ev = pv + pvTerminal;
-  return { ev, pvExplicit: pv, pvTerminal, equity: ev + cash, perShare: (ev + cash) / MODEL.group.sharesOutstanding };
+  return { ev, pvExplicit: pv, pvTerminal, equity: ev + cash, perShare: (ev + cash) / state.shares };
 }
 
 // ---------- results ----------
