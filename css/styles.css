@@ -8,7 +8,8 @@
   --radius:14px; --radius-s:9px;
   --shadow:0 1px 2px rgba(20,30,50,.05), 0 4px 18px rgba(20,30,50,.05);
   --shadow-h:0 2px 6px rgba(20,30,50,.08), 0 12px 30px rgba(20,30,50,.08);
-  --maxw:1240px;
+  --maxw:100%;
+  --gutter:clamp(18px, 2.6vw, 44px);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -22,7 +23,7 @@ h1,h2,h3,h4{margin:0;color:var(--ink);font-weight:700;line-height:1.25}
 
 /* ---------- Header & nav ---------- */
 header.top{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line)}
-.top-inner{max-width:var(--maxw);margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:18px;height:60px}
+.top-inner{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);display:flex;align-items:center;gap:18px;height:60px}
 .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:18px;letter-spacing:-.01em;white-space:nowrap}
 .brand .mark{width:30px;height:30px;border-radius:8px;background:var(--yellow);display:inline-flex;align-items:center;justify-content:center;
   font-weight:900;color:#1c2230;font-size:17px;box-shadow:inset 0 0 0 2px rgba(0,0,0,.06)}
@@ -33,13 +34,13 @@ header.top{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px so
 .dot.stale{background:var(--faint);box-shadow:0 0 0 3px var(--grayfill)}
 
 nav.tabs{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:60px;z-index:25}
-.tabs-inner{max-width:var(--maxw);margin:0 auto;padding:0 14px;display:flex;gap:2px;overflow-x:auto}
+.tabs-inner{max-width:var(--maxw);margin:0 auto;padding:0 calc(var(--gutter) - 6px);display:flex;gap:2px;overflow-x:auto}
 .tabs a{padding:12px 14px;font-size:13.5px;font-weight:600;color:var(--muted);white-space:nowrap;border-bottom:2.5px solid transparent;display:flex;align-items:center;gap:7px}
 .tabs a .ic{font-size:15px;opacity:.85}
 .tabs a:hover{color:var(--ink);text-decoration:none}
 .tabs a.active{color:var(--ink);border-bottom-color:var(--yellow)}
 
-main{max-width:var(--maxw);margin:0 auto;padding:22px 22px 70px}
+main{max-width:var(--maxw);margin:0 auto;padding:22px var(--gutter) 70px}
 .page-head{margin:4px 0 16px}
 .page-head h1{font-size:23px}
 .page-head p{margin:5px 0 0;color:var(--muted);font-size:14px;max-width:820px}
@@ -158,7 +159,7 @@ table.data tr.self td:first-child{background:var(--yellow-l)}
 .muted{color:var(--muted)}.small{font-size:12.5px}.center{text-align:center}
 .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--grayfill);color:var(--muted)}
 .divider{height:1px;background:var(--line);margin:16px 0}
-footer.foot{max-width:var(--maxw);margin:0 auto;padding:24px 22px 50px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+footer.foot{max-width:var(--maxw);margin:0 auto;padding:24px var(--gutter) 50px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
 .hide{display:none!important}
 @media(max-width:640px){
   .top-inner{padding:0 14px}.brand .sub{display:none}main{padding:16px 14px 60px}
