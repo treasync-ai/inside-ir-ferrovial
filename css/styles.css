@@ -111,6 +111,12 @@ table.data tr.self td:first-child{background:var(--yellow-l)}
 .gauge .big{font-size:30px;font-weight:800}
 .gauge .lab{font-size:13px;color:var(--muted)}
 
+/* ---------- valuation sidebar layout ---------- */
+.val-layout{display:grid;grid-template-columns:330px 1fr;gap:18px;align-items:start}
+.val-sidebar{position:sticky;top:132px;max-height:calc(100vh - 150px);overflow:auto}
+.val-sidebar h5{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 2px;font-weight:700}
+@media(max-width:900px){.val-layout{grid-template-columns:1fr}.val-sidebar{position:static;max-height:none}}
+
 /* ---------- sliders (valuation) ---------- */
 .slider-row{display:grid;grid-template-columns:1fr 86px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line)}
 .slider-row label{font-size:12.5px;color:var(--ink2);font-weight:600}

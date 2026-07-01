@@ -52,5 +52,5 @@
       { "agency": "EcoVadis", "value": "Gold (80/100)" }
     ]
   },
-  "disclaimer": "An independent investor-relations analytics tool built by David Vargas Sarasqueta. Not investment advice and not official Ferrovial material. Live market data via Yahoo Finance; curated figures from public results (FY2025 / Q1 2026) and sell-side research as of 30 Jun 2026 — verify before quoting."
+  "disclaimer": "Internal investor-relations analytics platform for Ferrovial SE. Figures are indicative and for internal use — verify against official Ferrovial disclosures before any external use. Live market data via Yahoo Finance; curated figures from the FY2025 Investor Pack, public results (FY2025 / Q1 2026) and sell-side research as of 30 Jun 2026."
 }

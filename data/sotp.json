@@ -8,7 +8,8 @@
   },
   "globals": {
     "wacc": { "value": 0.075, "min": 0.05, "max": 0.11, "step": 0.0025, "label": "WACC / discount rate" },
-    "riskFreeRate": { "value": 0.035, "min": 0.0, "max": 0.06, "step": 0.0025, "label": "Risk-free rate (10y)" }
+    "riskFreeRate": { "value": 0.035, "min": 0.0, "max": 0.06, "step": 0.0025, "label": "Risk-free rate (10y)" },
+    "tollGrowth": { "value": 0.06, "min": 0.0, "max": 0.12, "step": 0.005, "label": "Toll cash-flow growth (g)" }
   },
   "sotp": {
     "assets": [
@@ -16,19 +17,18 @@
         "id": "etr407", "name": "407 ETR", "stake": "48.29%", "method": "Dividend Discount (finite to 2098)", "model": "ddm",
         "color": "#f2b705",
         "params": {
-          "baseDividendEur": { "value": 500, "min": 300, "max": 800, "step": 10, "label": "Ferrovial's 2026 dividend (€m)" },
-          "growth": { "value": 0.06, "min": 0.0, "max": 0.12, "step": 0.005, "label": "Dividend growth (g)" },
+          "baseDividendEur": { "value": 490, "min": 300, "max": 800, "step": 10, "label": "Ferrovial's dividend, €m (pack: CAD 1.5bn × 48.29%)" },
           "years": { "value": 72, "min": 30, "max": 72, "step": 1, "label": "Years to concession end (2098)" }
         },
-        "note": "The crown jewel. Valued on the cash it pays Ferrovial, growing above inflation, over the ultra-long concession to 2098. Rate-sensitive: most value sits in the long tail."
+        "note": "The crown jewel. Valued on the cash it pays Ferrovial (CAD 1.5bn total dividend in 2025 × 48.29%), grown at the global toll-growth rate over the concession to 2098."
       },
       {
         "id": "lanes", "name": "US Managed Lanes", "stake": "54–72%", "method": "EV/EBITDA (proportionate)", "model": "evEbitda",
         "color": "#d99a00",
         "params": {
-          "propEbitdaEur": { "value": 620, "min": 400, "max": 900, "step": 10, "label": "Ferrovial-share EBITDA (€m)" },
+          "propEbitdaEur": { "value": 588, "min": 400, "max": 900, "step": 10, "label": "Ferrovial-share EBITDA, €m (pack, by stake)" },
           "multiple": { "value": 29, "min": 15, "max": 45, "step": 1, "label": "EV/EBITDA (x)" },
-          "netDebtEur": { "value": 3200, "min": 1500, "max": 5000, "step": 100, "label": "Proportionate net debt (€m)" }
+          "netDebtEur": { "value": 3000, "min": 1500, "max": 5000, "step": 100, "label": "Proportionate net debt (€m)" }
         },
         "note": "NTE, LBJ, NTE 35W, I-77, I-66. Dynamic congestion pricing drives revenue-per-transaction above inflation. High multiples reflect ramp-up & pricing power (no cap on I-66/I-77)."
       },

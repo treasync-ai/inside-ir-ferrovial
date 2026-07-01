@@ -9,7 +9,7 @@ export default async function render(root) {
     `<div class="grid g2">
       <div class="card">
         <h3>What this is</h3>
-        <p class="small">An independent, single-page <b>Investor Relations cockpit</b> for <b>Ferrovial SE (FER)</b> that tracks the share across its three fungible listings — <b>Nasdaq, BME Madrid and Euronext Amsterdam</b> — and brings sentiment, valuation, financials, analyst coverage, dividends, peers, calendar and news into one always-on place. The market data refreshes itself; the valuation is interactive.</p>
+        <p class="small">An internal <b>Investor Relations platform</b> for <b>Ferrovial SE (FER)</b> that tracks the share across its three fungible listings — <b>Nasdaq, BME Madrid and Euronext Amsterdam</b> — and brings sentiment, valuation, financials, asset detail, analyst coverage, dividends, peers, calendar and news into one always-on place. The market data refreshes itself; the valuation is interactive.</p>
         ${callout('Why it’s useful for IR', 'One screen to monitor the share across all three markets, track the sell-side view and the dividend, benchmark peers, and walk anyone through the equity story and valuation — without juggling terminals.')}
       </div>
       <div class="card">
@@ -17,8 +17,9 @@ export default async function render(root) {
         <ul class="small">
           <li><b>📊 Dashboard</b> — momentum sentiment, the three listings’ key stats (OHLC, volume, market cap, net &amp; % change), an interactive price chart, returns over every window (1D→5Y), YTD price &amp; dividend return, and latest news.</li>
           <li><b>📈 Share</b> — the three listings in detail, technical analysis (RSI &amp; moving averages), <b>dividends</b> (history, yield), credit ratings (S&amp;P, Fitch, Moody’s), debt issuance and total shareholder return.</li>
-          <li><b>🎯 Analysts</b> — recommendation consensus (Strong Buy→Sell bar), 12-month price-target range vs current, and a <b>heatmap</b> of covering firms by rating.</li>
-          <li><b>📒 Financials</b> — Ferrovial’s reported KPIs over several years plus detailed IFRS statements (annual / quarterly).</li>
+          <li><b>🎯 Analysts</b> — recommendation consensus (Outperform→Underperform bar), 12-month price-target range, and a <b>heatmap</b> of every covering firm (Ferrovial IR list).</li>
+          <li><b>🛣️ Assets</b> — operating &amp; financial detail by asset from the Investor Pack: 407 ETR, US Managed Lanes, Dalaman, Construction and Energy (2016–2025).</li>
+          <li><b>📒 Financials</b> — consolidated P&amp;L 2016–2025, revenue by division and the recourse / non-recourse debt structure, plus detailed IFRS statements.</li>
           <li><b>🗓️ Calendar</b> — upcoming earnings, dividends and milestones.</li>
           <li><b>📰 News</b> — auto-aggregated, deduplicated, refreshed daily.</li>
           <li><b>⚖️ Peers</b> — Ferrovial vs Vinci, Eiffage, ACS, Sacyr, Transurban and Aena.</li>
@@ -40,11 +41,11 @@ export default async function render(root) {
       <h3>Data sources &amp; methodology</h3>
       <ul class="small">
         <li><b>Live market data:</b> Yahoo Finance via the scheduled fetcher; the browser reads the committed snapshots from GitHub’s CDN, so data updates without redeploying.</li>
+        <li><b>Investor Pack:</b> the official FY2025 Investor Pack drives the Assets page, the 10-year consolidated P&amp;L, the division split and the debt structure — refreshed by dropping a new pack into <code>data/sources/</code> and running <code>scripts/build-pack.py</code>.</li>
         <li><b>Curated figures:</b> Ferrovial FY2025 results &amp; Q1 2026 trading update, financial statements, and sell-side research, as of 30 June 2026.</li>
         <li><b>Valuation model:</b> 407 ETR via finite dividend-discount; US Managed Lanes via proportionate EV/EBITDA; Airports on invested-equity multiples; Construction on EV/EBIT; the rest at market / transaction value. Defaults are calibrated to roughly reproduce the ~€43bn equity value so sliders show <i>sensitivity</i>.</li>
         <li><b>Analyst &amp; peer multiples:</b> recommendation distribution and price targets are live; the firm-level heatmap and peer P/E &amp; EV/EBITDA blend live data with curated indicative figures (~mid-2026) where the free feed doesn’t expose them.</li>
       </ul>
-      ${callout('Disclaimer', esc(c?.disclaimer || 'An independent IR analytics tool. Not investment advice and not official Ferrovial material. Verify all figures before quoting.'), 'gray')}
-      <p class="small muted" style="margin-top:8px">Built by David Vargas Sarasqueta.</p>
+      ${callout('Disclaimer', esc(c?.disclaimer || 'Internal investor-relations analytics platform. Figures are indicative — verify against official Ferrovial disclosures before any external use.'), 'gray')}
     </div>`;
 }
