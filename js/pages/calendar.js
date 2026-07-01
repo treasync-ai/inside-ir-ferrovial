@@ -8,14 +8,7 @@ const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export default async function render(root) {
   root.innerHTML = pageHead('Financial calendar',
     'Ferrovial IR events — results releases, conference calls, roadshows and conferences.') +
-    `<div class="spread mb" style="flex-wrap:wrap;gap:10px">
-       <div class="range-btns" id="cal-filter">
-         <button data-c="all" class="active">All</button>
-         <button data-c="results">Financial calendar</button>
-         <button data-c="roadshow">Roadshows &amp; Conferences</button>
-       </div>
-     </div>
-     <div class="grid g-2-1">
+    `<div class="grid g-2-1">
        <div id="cal-list">${loading()}</div>
        <div class="card" id="cal-notes" style="align-self:start"></div>
      </div>`;
@@ -29,16 +22,8 @@ export default async function render(root) {
     .filter((e) => e.date && e.date >= today)
     .sort((a, b) => a.date.localeCompare(b.date) || String(a.title).localeCompare(String(b.title)));
 
-  const draw = (cat) => {
-    const evs = all.filter((e) => cat === 'all' || e.category === cat);
-    document.getElementById('cal-list').innerHTML = evs.length ? renderMonths(evs) : '<div class="card"><div class="muted">No upcoming events in this view.</div></div>';
-  };
-  document.getElementById('cal-filter').addEventListener('click', (e) => {
-    const b = e.target.closest('button'); if (!b) return;
-    document.querySelectorAll('#cal-filter button').forEach((x) => x.classList.toggle('active', x === b));
-    draw(b.dataset.c);
-  });
-  draw('all');
+  document.getElementById('cal-list').innerHTML = all.length ? renderMonths(all)
+    : '<div class="card"><div class="muted">No upcoming events.</div></div>';
 
   document.getElementById('cal-notes').innerHTML = `<h3>Reporting &amp; disclosure</h3>
     <p class="small">${esc(baseline.cadence || '')}</p>

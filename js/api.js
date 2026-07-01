@@ -24,7 +24,7 @@ async function live(file) {
   const key = 'live:' + file;
   const cached = memo.get(key);
   if (cached && cached.until > Date.now()) return cached.promise;
-  const bust = Math.floor(Date.now() / 60000); // refresh at most once a minute
+  const bust = Date.now(); // unique per fetch → always bypasses the GitHub raw CDN cache
   const promise = (async () => {
     try {
       const r = await fetch(`${RAW}${file}?t=${bust}`, { cache: 'no-store' });
