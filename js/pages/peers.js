@@ -31,9 +31,9 @@ export default async function render(root) {
     if (evItems.length) barChart(document.getElementById('p-ev'), evItems, { yFmt: (v) => fmt.num(v, 0) + 'x' });
     if (peItems.length) barChart(document.getElementById('p-pe'), peItems, { yFmt: (v) => fmt.num(v, 0) + 'x' });
     document.getElementById('peers-note').innerHTML = callout('The valuation debate',
-      'Ferrovial trades at a clear premium to its construction-heavy Spanish/French peers (Vinci, Bouygues, Sacyr, Acciona, Eiffage, OHLA) and screens closer to regulated-infrastructure quality (Aena, Abertis). The premium reflects the duration and pricing power of its North-American toll roads. <b>Abertis is private</b> (delisted 2018), shown with indicative multiples only.');
+      'Ferrovial trades at a clear premium to its construction-heavy Spanish/French peers (Vinci, Bouygues, Sacyr, Acciona, Eiffage, OHLA) and screens closer to regulated-infrastructure quality (Aena). The premium reflects the duration and pricing power of its North-American toll roads.');
   } catch {
-    document.getElementById('peers-table').innerHTML = errBox('Peer data is refreshing — check back shortly. Peer set: Vinci, Bouygues, Sacyr, Acciona, Eiffage, Aena, OHLA, Abertis.');
+    document.getElementById('peers-table').innerHTML = errBox('Peer data is refreshing — check back shortly. Peer set: Vinci, Bouygues, Sacyr, Acciona, Eiffage, Aena, OHLA.');
   }
 }
 
@@ -53,5 +53,5 @@ function renderTable(rows) {
     cols.map((c, i) => `<td${i === 0 ? ' style="text-align:left"' : ''}>${c[2](r)}</td>`).join('') + `</tr>`).join('');
   document.getElementById('peers-table').innerHTML =
     `<div class="tbl-wrap"><table class="data"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>
-     <div class="small muted" style="margin-top:8px">Price, market cap &amp; 1Y return are live (Twelve Data). <b>*</b> P/E, EV/EBITDA, dividend yield &amp; EBITDA margin are curated indicative figures (~mid-2026) — the free data tier doesn’t expose them. Abertis is private (delisted 2018) — indicative multiples only, no live price.</div>`;
+     <div class="small muted" style="margin-top:8px">Price, market cap &amp; 1Y return are live (Twelve Data). <b>*</b> P/E, EV/EBITDA, dividend yield &amp; EBITDA margin are live where the feed exposes them, otherwise curated indicative figures (~mid-2026). Market caps in local reporting currency.</div>`;
 }

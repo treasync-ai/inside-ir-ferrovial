@@ -1,14 +1,25 @@
 {
-  "note": "Indicative IR calendar based on Ferrovial's historical reporting cadence (FY ~late Feb, Q1 ~early May, H1 ~late Jul, 9M ~late Oct/early Nov; AGM ~April). Dates are ESTIMATES — confirm on Ferrovial's IR site. The live /api/calendar overlays Yahoo's next earnings date.",
+  "note": "Ferrovial IR events — financial calendar + roadshows & conferences. Source: Ferrovial Investor Relations 'Events' page. Update as IR publishes new dates.",
   "cadence": "Quarterly trading updates + half-year and full-year results. Reg FD / MAR quiet periods precede each release.",
   "events": [
-    { "date": "2026-07-30", "type": "Earnings", "title": "H1 2026 results", "estimate": true },
-    { "date": "2026-10-29", "type": "Earnings", "title": "9M 2026 results", "estimate": true },
-    { "date": "2026-11-30", "type": "Milestone", "title": "JFK New Terminal One — Phase A opening (targeted)", "estimate": true },
-    { "date": "2026-12-15", "type": "Capital", "title": "Project dividends window (Managed Lanes & 407 ETR, year-end)", "estimate": true },
-    { "date": "2027-02-24", "type": "Earnings", "title": "FY2026 results", "estimate": true },
-    { "date": "2027-04-08", "type": "AGM", "title": "Annual General Meeting 2027", "estimate": true },
-    { "date": "2027-05-07", "type": "Earnings", "title": "Q1 2027 results", "estimate": true }
+    { "date": "2026-07-22", "type": "Financial calendar", "category": "results", "title": "407 ETR — H1 2026 results release", "location": "Toronto" },
+    { "date": "2026-07-28", "type": "Financial calendar", "category": "results", "title": "Budimex — H1 2026 selected financial data", "location": "Warsaw" },
+    { "date": "2026-07-28", "type": "Financial calendar", "category": "results", "title": "Ferrovial — H1 2026 results release (U.S. market close)", "location": "Amsterdam" },
+    { "date": "2026-07-29", "type": "Financial calendar", "category": "results", "title": "Ferrovial — H1 2026 results conference call & webcast", "location": "Amsterdam" },
+    { "date": "2026-08-21", "type": "Financial calendar", "category": "results", "title": "Budimex — H1 2026 results", "location": "Warsaw" },
+    { "date": "2026-09-02", "type": "Roadshows and Conferences", "category": "roadshow", "title": "BofA European Utilities & Infrastructure Fieldtrip", "location": "Virtual" },
+    { "date": "2026-09-03", "type": "Roadshows and Conferences", "category": "roadshow", "title": "JP Morgan — “Back to School”", "location": "Virtual" },
+    { "date": "2026-09-08", "type": "Roadshows and Conferences", "category": "roadshow", "title": "Jefferies: meeting with investors in Canada", "location": "Toronto" },
+    { "date": "2026-09-09", "type": "Roadshows and Conferences", "category": "roadshow", "title": "Jefferies: Global Industrials Conference", "location": "NYC" },
+    { "date": "2026-09-15", "type": "Roadshows and Conferences", "category": "roadshow", "title": "MS: 14th Annual Laguna Conference", "location": "Laguna, CA" },
+    { "date": "2026-09-29", "type": "Roadshows and Conferences", "category": "roadshow", "title": "Santander: Infra & Utilities Conference", "location": "New York City" },
+    { "date": "2026-10-21", "type": "Financial calendar", "category": "results", "title": "407 ETR — 9M 2026 results release", "location": "Toronto" },
+    { "date": "2026-10-27", "type": "Financial calendar", "category": "results", "title": "Budimex — 9M 2026 results", "location": "Warsaw" },
+    { "date": "2026-10-27", "type": "Financial calendar", "category": "results", "title": "Ferrovial — 9M 2026 results release (U.S. market close)", "location": "Amsterdam" },
+    { "date": "2026-10-28", "type": "Financial calendar", "category": "results", "title": "Ferrovial — 9M 2026 results conference call & webcast", "location": "Amsterdam" },
+    { "date": "2026-11-10", "type": "Roadshows and Conferences", "category": "roadshow", "title": "CFO roadshow — Paris", "location": "Paris" },
+    { "date": "2026-11-11", "type": "Roadshows and Conferences", "category": "roadshow", "title": "UBS: European Conference — C-Suite", "location": "London" },
+    { "date": "2026-12-02", "type": "Roadshows and Conferences", "category": "roadshow", "title": "UBS: Global Industrials Conference", "location": "Florida" }
   ],
   "reportingNotes": [
     "Ferrovial files with the SEC as a Foreign Private Issuer: 20-F (annual) and 6-K (events/quarterly).",

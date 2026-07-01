@@ -30,7 +30,6 @@ PEERS = [
     {"symbol": "FGR.PA",  "name": "Eiffage",    "currency": "EUR", "type": "Concessions / Construction"},
     {"symbol": "AENA.MC", "name": "Aena",       "currency": "EUR", "type": "Airports"},
     {"symbol": "OHLA.MC", "name": "OHLA",       "currency": "EUR", "type": "Construction"},
-    {"symbol": "ABE.MC",  "name": "Abertis",    "currency": "EUR", "type": "Toll roads (private)", "private": True},
 ]
 SHARES = {"FER": 729555372, "FER.MC": 729555372, "FER.AS": 729555372,
           "DG.PA": 580000000, "EN.PA": 380000000, "SCYR.MC": 830000000, "ANA.MC": 54900000,
@@ -44,7 +43,6 @@ PEER_MULTIPLES = {
     "FGR.PA": {"pe": 9, "evEbitda": 7, "dividendYield": 4.0, "ebitdaMargin": 16},
     "AENA.MC": {"pe": 17, "evEbitda": 12, "dividendYield": 4.2, "ebitdaMargin": 60},
     "OHLA.MC": {"pe": None, "evEbitda": 5, "dividendYield": 0, "ebitdaMargin": 4},
-    "ABE.MC": {"pe": None, "evEbitda": 10, "dividendYield": None, "ebitdaMargin": 65},
 }
 
 def num(v):
